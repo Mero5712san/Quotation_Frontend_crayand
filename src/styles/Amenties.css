@@ -1,0 +1,201 @@
+.amenties {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.amenties .heading {
+    font-size: 1rem;
+    font-weight: 800;
+    margin: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.amenties .line {
+    width: 100%;
+    height: 1px;
+    background-color: #c6c6c6;
+    color: #c6c6c6;
+}
+
+.amenties .page{
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.amenties .page .infomat{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 1rem ;
+    background-color: #FEEAEA80;
+    padding: 0.5rem 1rem;
+    color: #B3776D;
+    border-radius: 0.5rem;
+    text-transform: capitalize;
+}
+
+.amenties .page .infomatutility{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 1rem ;
+    background-color: #DBF0F180;
+    padding: 0.5rem 1rem;
+    color: #6DAFB3;
+    border-radius: 0.5rem;
+    text-transform: capitalize;
+}
+
+.amenties .page .infomat .start{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.amenties .page .infomatutility .start{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.amenties .page .infomat .start img{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.amenties .page .infomatutility .start img{
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0.1rem;
+    border: 2px solid #6DAFB3;
+    border-radius: 0.3rem;
+    transform: rotate(90deg);
+}
+
+.amenties .page .light{
+    font-size: 0.8rem;
+    color: #c6c6c6;
+    text-transform: capitalize;
+    margin:0rem 1rem;
+    margin-bottom: 0.4rem;
+}
+
+.amenties .page .elements .bord{
+    border: 1px solid  #c6c6c6;
+    margin: 0rem 1rem;
+    border-radius: 0.3rem;
+    margin-top: 0.5rem;
+}
+.amenties .page .elements{
+    display: flex;
+    flex-direction:column;
+    /* justify-content: center; */
+    overflow-y: scroll;
+    height: 50vh;
+    /* padding-top: 10rem; */
+}
+
+.amenties .page .elements .element{
+    /* border: 1px solid  #c6c6c6; */
+    border-radius: 0.3rem 0.3rem ;
+    display: flex;
+    height: 3rem;
+    align-items: center;
+    /* justify-content: space-between; */
+    /* margin: 0rem 1rem; */
+    /* padding:0.3rem; */
+    padding-bottom: 0;
+    /* margin-top: 0.5rem; */
+}
+.amenties .page .elements .element .images{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    height: 3rem;
+}
+.amenties .page .elements .element img{
+    width: 2.5rem;
+    margin-top: 0.4rem;
+    margin-left: 0.2rem;
+    height: 2.5rem;
+    border-radius: 0.3rem;
+}
+
+.amenties .page .elements .element .details .name{ 
+    font-weight:800;
+    font-size:1rem;
+
+}
+
+.amenties .page .elements .element .details{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    text-align: left;
+    gap: 0.1rem;
+    padding-bottom: 0.3rem;
+    padding-left: 1rem;
+
+}
+
+.amenties .page .elements .element .details .infos{
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    text-transform: capitalize;
+    gap: 0.5rem;
+}
+.amenties .page .elements .optionactive{
+    display: flex;
+    height:1rem;
+    position: relative;
+    color: #929292;
+    text-transform: capitalize;
+    align-items: center;
+    /* border: 1px solid #c6c6c6; */
+    border-top:1px solid  #c6c6c6;  
+
+    /* margin: 0rem 1rem ; */
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+    border-radius: 0 0 0.3rem 0.3rem;
+}
+.amenties .page .elements .option{
+    display: none;
+    height:1rem;
+    position: relative;
+    color: #929292;
+    align-items: center;
+    /* border: 1px solid #c6c6c6; */
+    /* margin: 0rem 1rem ; */
+    padding: 0.7rem 1rem;
+    text-transform: capitalize;
+    font-size: 0.8rem;
+    border-radius: 0 0 0.3rem 0.3rem;
+}
+
+.amenties .page .elements .optionactive .free,
+.amenties .page .elements .option .free{
+    position: absolute;
+    left:2.4rem;
+}
+
+.amenties .page .buttons{
+    display: flex;
+    justify-content: center;
+    background-color: #5078E1;
+    color: #ffffff;
+    margin: 0rem 1rem;
+    width:93%;
+    bottom: 1rem;
+    position: absolute;
+    padding: 0.5rem;
+    border-radius: 0.33rem;
+}

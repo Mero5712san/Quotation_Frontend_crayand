@@ -5,10 +5,19 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Divider } from "@mui/material";
 import PricingTable from "../PricingTable/PricingTable"; // Import PricingTable
+import Amenities from "../Amenities/Amenities";
+import Utilities from "../Utilities/Utilities";
+import Remove from "../Remove/Remove";
+import Discount from "../Discount/Discount";
 
 export default function PositionedMenu() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [openModal, setOpenModal] = useState(false); // State to control modal
+    const [OpenAmenities, setOpenAmenities] = useState(false); // State to control Amenities modal
+    const [OpenUtilities, setOpenUtilities] = useState(false); // State to control Utilities modal
+    const [OpenDiscount,  setOpenDiscount] = useState(false); // State to control Discount modal
+    const [OpenRemove,  setOpenRemove] = useState(false); // State to control Remove modal
+
     const open = Boolean(anchorEl);
 
     // Handles Menu click
@@ -26,6 +35,26 @@ export default function PositionedMenu() {
         setOpenModal(true);
         handleClose(); // Close the menu when modal opens
     };
+
+    const handeAmentiesOpen = () =>{
+        setOpenAmenities(true);
+        handleClose();
+    }
+
+    const handeDiscountOpen = () =>{
+        setOpenDiscount(true);
+        handleClose();
+    }
+
+    const handeRemoveOpen = () =>{
+        setOpenRemove(true);
+        handleClose();
+    }
+
+    const handleUtilitiesOpen = () =>{
+        setOpenUtilities(true);
+        handleClose();
+    }
 
     // Handles closing the modal
     const handleCloseModal = () => setOpenModal(false);
@@ -80,7 +109,7 @@ export default function PositionedMenu() {
                 </MenuItem>
                 <Divider sx={{ margin: 0 }} />
                 <MenuItem
-                    onClick={handleClose}
+                    onClick={handeAmentiesOpen}
                     sx={{
                         fontSize: "14px",
                         color: "#516484",
@@ -91,7 +120,7 @@ export default function PositionedMenu() {
                 </MenuItem>
                 <Divider sx={{ margin: 0 }} />
                 <MenuItem
-                    onClick={handleClose}
+                    onClick={handleUtilitiesOpen}
                     sx={{
                         fontSize: "14px",
                         color: "#516484",
@@ -102,7 +131,7 @@ export default function PositionedMenu() {
                 </MenuItem>
                 <Divider sx={{ margin: 0 }} />
                 <MenuItem
-                    onClick={handleClose}
+                    onClick={handeDiscountOpen}
                     sx={{
                         fontSize: "14px",
                         color: "#516484",
@@ -113,7 +142,7 @@ export default function PositionedMenu() {
                 </MenuItem>
                 <Divider sx={{ margin: 0 }} />
                 <MenuItem
-                    onClick={handleClose}
+                    onClick={handeRemoveOpen}
                     sx={{
                         fontSize: "14px",
                         color: "#516484",
@@ -129,6 +158,27 @@ export default function PositionedMenu() {
                 opencondition={openModal} // Modal open state
                 setopencondition={setOpenModal} // Method to close modal
             />
+
+            <Amenities
+                opencondition={OpenAmenities} // Modal open state
+                setopencondition={setOpenAmenities} // Method to close modal
+            />
+
+            <Utilities
+                opencondition={OpenUtilities} // Modal open state
+                setopencondition={setOpenUtilities} // Method to close modal
+            />
+
+            <Remove
+                opencondition={OpenRemove} // Modal open state
+                setopencondition={setOpenRemove} // Method to close modal
+            />
+
+            <Discount
+                opencondition={OpenDiscount} // Modal open state
+                setopencondition={setOpenDiscount} // Method to close modal
+            />
+             
         </div>
     );
 }

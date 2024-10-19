@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import dropdown from "../../assets/blackDropdown.svg";
 import bdropdown from "../../assets/Bluedropdown.svg";
 import profile from "../../assets/adprofile.png";
-import bed from "../../assets/bed.svg";
-import sqft from "../../assets/sqft.svg";
+import home from "../../assets/home.svg";
+import bed from "../../assets/bed.svg"
 import bath from "../../assets/bath.svg";
 import sample from "../../assets/unit2.png";
 import del from "../../assets/delete.svg"
 import "../../styles/Dashboard.css";
 import PositionedMenu from "../../components/Options/Options";
 import CustomizedMenus from "../../components/Dropdown/Dropdown";
+import UnitDetails from "../../components/BigModel/UnitDetails";
 const Dashboard = () => {
+    const [OpenUnitDetails, setOpenUnitDetails] = useState(false); // State to control modal
+
+    const handeUnitDetailsOpen = () =>{
+        setOpenUnitDetails(true);
+        handleClose();
+    }
+
     return (
         <div className="dashboard">
             <div className="topbar">
@@ -108,14 +116,14 @@ const Dashboard = () => {
                             <li>unit details</li>
                         </div>
                         <div className="unitcards">
-                            <div className="unitcard">
-                                <div className="image">
+                            <div className="unitcard" >
+                                <div className="image" onClick={handeUnitDetailsOpen}>
                                     <img src={sample} alt="" />
                                     <div className="delete">
                                         <img src={del} alt="" />
                                     </div>
                                 </div>
-                                <div className="infos">
+                                <div className="infos" onClick={handeUnitDetailsOpen}>
                                     <div className="nameprice">
                                         <li className="name">
                                             jumeirah estate
@@ -141,7 +149,7 @@ const Dashboard = () => {
                                         </li>
                                         <li className="icd">
                                             <li>
-                                                <img src={sqft} alt="" />
+                                                <img src={home} alt="" />
                                             </li>
                                             <li>2BHK</li>
                                         </li>
@@ -154,12 +162,12 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="unitcard">
-                                <div className="image">
+                                <div className="image" onClick={handeUnitDetailsOpen}>
                                     <img src={sample} alt="" />
                                     <div className="delete">
                                         <img src={del} alt="" /></div>{" "}
                                 </div>
-                                <div className="infos">
+                                <div className="infos" onClick={handeUnitDetailsOpen}>
                                     <div className="nameprice">
                                         <li className="name">
                                             jumeirah estate
@@ -185,7 +193,7 @@ const Dashboard = () => {
                                         </li>
                                         <li className="icd">
                                             <li>
-                                                <img src={sqft} alt="" />
+                                                <img src={home} alt="" />
                                             </li>
                                             <li>2BHK</li>
                                         </li>
@@ -198,12 +206,12 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="unitcard">
-                                <div className="image">
+                                <div className="image" onClick={handeUnitDetailsOpen}>
                                     <img src={sample} alt="" />
                                     <div className="delete">
                                         <img src={del} alt="" /></div>{" "}
                                 </div>
-                                <div className="infos">
+                                <div className="infos" onClick={handeUnitDetailsOpen}>
                                     <div className="nameprice">
                                         <li className="name">
                                             jumeirah estate
@@ -229,7 +237,7 @@ const Dashboard = () => {
                                         </li>
                                         <li className="icd">
                                             <li>
-                                                <img src={sqft} alt="" />
+                                                <img src={home} alt="" />
                                             </li>
                                             <li>2BHK</li>
                                         </li>
@@ -242,12 +250,12 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="unitcard">
-                                <div className="image">
+                                <div className="image" onClick={handeUnitDetailsOpen}>
                                     <img src={sample} alt="" />
                                     <div className="delete">
                                         <img src={del} alt="" /></div>{" "}
                                 </div>
-                                <div className="infos">
+                                <div className="infos" onClick={handeUnitDetailsOpen}>
                                     <div className="nameprice">
                                         <li className="name">
                                             jumeirah estate
@@ -273,7 +281,7 @@ const Dashboard = () => {
                                         </li>
                                         <li className="icd">
                                             <li>
-                                                <img src={sqft} alt="" />
+                                                <img src={home} alt="" />
                                             </li>
                                             <li>2BHK</li>
                                         </li>
@@ -347,6 +355,8 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+            <UnitDetails opencondition={OpenUnitDetails} setopencondition={setOpenUnitDetails} />
+
         </div>
     );
 };

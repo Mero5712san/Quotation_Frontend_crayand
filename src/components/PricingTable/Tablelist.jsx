@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import ibtn from "../../assets/i.svg";
 import "../../styles/Tablelist.css";
 import InnerTable from "../InnerTable/InnerTable";
+import PrincingInnerTable from "../InnerTable/PricingInnerTable";
 
 const Tablelist = ({ setopencondition }) => {
     const [isInnerTableOpen, setIsInnerTableOpen] = useState(false); // State to control the inner table modal
-
+    const [Pricetableopen , Setpricetableopen] = useState(false)
+    
+    const handlePrimaryTable = () =>{
+        Setpricetableopen(true)
+    }
     const handlePrimaryClick = () => {
         setIsInnerTableOpen(true); // Open the InnerTable modal
         // setopencondition(false); // Close the PricingTable modal
@@ -18,7 +23,7 @@ const Tablelist = ({ setopencondition }) => {
             <div className="page">
                 {/* Render elements dynamically to avoid repetitive code */}
                 {["Primary", "Secondary", "One Time Charges", "Refundables", "Inventory Item", "Parking Slot"].map((item, index) => (
-                    <div className={`element${index + 1}`} key={index} onClick={handlePrimaryClick}>
+                    <div className={`element${index + 1}`} key={index} onClick={item === "Primary" ? handlePrimaryTable : handlePrimaryClick}>
                         <div className="start">
                             <li className="number">{String(index + 1).padStart(2, '0')}</li>
                             <li>{item}</li>
@@ -39,6 +44,8 @@ const Tablelist = ({ setopencondition }) => {
                     </div>
                 ))}
                 <InnerTable opencondition={isInnerTableOpen} setopencondition={setIsInnerTableOpen} />
+                <PrincingInnerTable  opencondition={Pricetableopen} setopencondition={Setpricetableopen} />
+
             </div>
         </div>
     );
