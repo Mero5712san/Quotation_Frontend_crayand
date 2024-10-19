@@ -6,7 +6,10 @@ import bed from "../../assets/bed.svg";
 import sqft from "../../assets/sqft.svg";
 import bath from "../../assets/bath.svg";
 import sample from "../../assets/unit2.png";
+import del from "../../assets/delete.svg"
 import "../../styles/Dashboard.css";
+import PositionedMenu from "../../components/Options/Options";
+import CustomizedMenus from "../../components/Dropdown/Dropdown";
 const Dashboard = () => {
     return (
         <div className="dashboard">
@@ -17,11 +20,12 @@ const Dashboard = () => {
                     </li>
                     <li className="text">create quotation to existing lead</li>
                 </div>
-                <div className="end">
-                    <li className="text">casagrand</li>
+                <div>
+                    {/* <li className="text">casagrand</li>
                     <li>
                         <img src={dropdown} alt="" />
-                    </li>
+                    </li> */}
+                    <CustomizedMenus />
                 </div>
             </div>
             <div className="pagecontain">
@@ -107,6 +111,9 @@ const Dashboard = () => {
                             <div className="unitcard">
                                 <div className="image">
                                     <img src={sample} alt="" />
+                                    <div className="delete">
+                                        <img src={del} alt="" />
+                                    </div>
                                 </div>
                                 <div className="infos">
                                     <div className="nameprice">
@@ -142,14 +149,15 @@ const Dashboard = () => {
                                 </div>
                                 <div className="customise">
                                     <li>
-                                        <span>+</span>
+                                        <PositionedMenu />
                                     </li>
-                                    <li>Cutomise</li>
                                 </div>
                             </div>
                             <div className="unitcard">
                                 <div className="image">
                                     <img src={sample} alt="" />
+                                    <div className="delete">
+                                        <img src={del} alt="" /></div>{" "}
                                 </div>
                                 <div className="infos">
                                     <div className="nameprice">
@@ -185,14 +193,15 @@ const Dashboard = () => {
                                 </div>
                                 <div className="customise">
                                     <li>
-                                        <span>+</span>
+                                        <PositionedMenu />
                                     </li>
-                                    <li>Cutomise</li>
                                 </div>
                             </div>
                             <div className="unitcard">
                                 <div className="image">
                                     <img src={sample} alt="" />
+                                    <div className="delete">
+                                        <img src={del} alt="" /></div>{" "}
                                 </div>
                                 <div className="infos">
                                     <div className="nameprice">
@@ -228,14 +237,15 @@ const Dashboard = () => {
                                 </div>
                                 <div className="customise">
                                     <li>
-                                        <span>+</span>
+                                        <PositionedMenu />
                                     </li>
-                                    <li>Cutomise</li>
                                 </div>
                             </div>
                             <div className="unitcard">
                                 <div className="image">
                                     <img src={sample} alt="" />
+                                    <div className="delete">
+                                        <img src={del} alt="" /></div>{" "}
                                 </div>
                                 <div className="infos">
                                     <div className="nameprice">
@@ -271,9 +281,8 @@ const Dashboard = () => {
                                 </div>
                                 <div className="customise">
                                     <li>
-                                        <span>+</span>
+                                        <PositionedMenu />
                                     </li>
-                                    <li>Cutomise</li>
                                 </div>
                             </div>
                         </div>
@@ -285,7 +294,12 @@ const Dashboard = () => {
                                 <div className="light">
                                     <li className="start">Descrition</li>
                                     <li className="center">qty</li>
-                                    <li className="end" style={{color:"#5e5e5f"}}>amount</li>
+                                    <li
+                                        className="end"
+                                        style={{ color: "#5e5e5f" }}
+                                    >
+                                        amount
+                                    </li>
                                 </div>
                                 <div className="line"></div>
                                 <div className="list">
@@ -296,7 +310,11 @@ const Dashboard = () => {
                                 <div className="list">
                                     <li className="start">total discount</li>
                                     <li className="center">10%</li>
-                                    <li className="end"><span className="discount">- $ 100.00</span></li>
+                                    <li className="end">
+                                        <span className="discount">
+                                            - $ 100.00
+                                        </span>
+                                    </li>
                                 </div>
                                 <div className="line"></div>
                                 <div className="list">

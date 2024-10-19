@@ -1,0 +1,316 @@
+.pricingtable {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.pricingtable .heading {
+    font-size: 1rem;
+    margin-top: 1rem;
+    font-weight: 700;
+    padding-left: 1rem;
+}
+.pricingtable .line {
+    width: 100%;
+    height: 1px;
+    background: #c6c6c6;
+    margin-top: 1rem;
+}
+.pricingtable .page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+    padding-top: 0.5rem;
+}
+
+.pricingtable .page .element1 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* border: 1px solid #ddd; */
+    background-color: #feeaea80;
+    padding: 1rem 0.3rem;
+    margin: 0.4rem 0rem;
+    border-radius: 0.5rem;
+}
+.pricingtable .page .element2 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* border: 1px solid #ddd; */
+    padding: 1rem 0.3rem;
+    margin: 0.4rem 0rem;
+    border-radius: 0.5rem;
+    background-color: #ede4fe80;
+}
+.pricingtable .page .element3 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* border: 1px solid #ddd; */
+    padding: 1rem 0.3rem;
+    margin: 0.4rem 0rem;
+    border-radius: 0.5rem;
+    background-color: #dbf0f180;
+}
+.pricingtable .page .element4 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* border: 1px solid #ddd; */
+    padding: 1rem 0.3rem;
+    margin: 0.4rem 0rem;
+    border-radius: 0.5rem;
+    background-color: #e4edff80;
+}
+.pricingtable .page .element5 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* border: 1px solid #ddd; */
+    padding: 1rem 0.3rem;
+    margin: 0.4rem 0rem;
+    border-radius: 0.5rem;
+    background-color: #fffad880;
+}
+.pricingtable .page .element6 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* border: 1px solid #ddd; */
+    padding: 1rem 0.3rem;
+    margin: 0.4rem 0rem;
+    border-radius: 0.5rem;
+    background-color: #feeaea80;
+}
+
+.pricingtable .page .element1 .start .number {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: white;
+    background-color: #b3776d;
+    border-radius: 50%;
+    width: 1.3rem;
+    height: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pricingtable .page .element2 .start .number {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: white;
+    background-color: #896db3;
+    border-radius: 50%;
+    width: 1.3rem;
+    height: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pricingtable .page .element3 .start .number {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: white;
+    background-color: #6dafb3;
+    border-radius: 50%;
+    width: 1.3rem;
+    height: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pricingtable .page .element4 .start .number {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: white;
+    background-color: #6d80b3;
+    border-radius: 50%;
+    width: 1.3rem;
+    height: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pricingtable .page .element5 .start .number {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: white;
+    background-color: #b3a16d;
+    border-radius: 50%;
+    width: 1.3rem;
+    height: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pricingtable .page .element6 .start .number {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: white;
+    background-color: #b3776d;
+    border-radius: 50%;
+    width: 1.3rem;
+    height: 1.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pricingtable .page .element1 .start {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-transform: capitalize;
+    color: #b3776d;
+}
+.pricingtable .page .element2 .start {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-transform: capitalize;
+    color: #896db3;
+}
+.pricingtable .page .element3 .start {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-transform: capitalize;
+    color: #6dafb3;
+}
+.pricingtable .page .element4 .start {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-transform: capitalize;
+    color: #6d80b3;
+}
+.pricingtable .page .element5 .start {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-transform: capitalize;
+    color: #b3a16d;
+}
+.pricingtable .page .element6 .start {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-transform: capitalize;
+    color: #b3776d;
+}
+
+.pricingtable .page .element1 .end img {
+    width: 1rem;
+    height: 1rem;
+}
+.pricingtable .page .element2 .end img {
+    width: 1rem;
+    height: 1rem;
+}
+.pricingtable .page .element3 .end img {
+    width: 1rem;
+    height: 1rem;
+}
+.pricingtable .page .element4 .end img {
+    width: 1rem;
+    height: 1rem;
+}
+.pricingtable .page .element5 .end img {
+    width: 1rem;
+    height: 1rem;
+}
+.pricingtable .page .element6 .end img {
+    width: 1rem;
+    height: 1rem;
+}
+.pricingtable .page .element1 .end svg {
+    width: 0.7rem;
+    height: 0.7rem;
+    fill: #b3776d;
+    stroke: #b3776d;
+}
+.pricingtable .page .element2 .end svg {
+    width: 0.7rem;
+    height: 0.7rem;
+    fill: #896db3;
+    stroke: #896db3;
+}
+.pricingtable .page .element3 .end svg {
+    width: 0.7rem;
+    height: 0.7rem;
+    fill: #6dafb3;
+    stroke: #6dafb3;
+}
+.pricingtable .page .element4 .end svg {
+    width: 0.7rem;
+    height: 0.7rem;
+    fill: #6d80b3;
+    stroke: #6d80b3;
+}
+.pricingtable .page .element5 .end svg {
+    width: 0.7rem;
+    height: 0.7rem;
+    fill: #b3a16d;
+    stroke: #b3a16d;
+}
+.pricingtable .page .element6 .end svg {
+    width: 0.7rem;
+    height: 0.7rem;
+    fill: #b3a16d;
+    stroke: #b3a16d;
+}
+.pricingtable .page .element1 .end {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.pricingtable .page .element2 .end {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.pricingtable .page .element3 .end {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.pricingtable .page .element4 .end {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.pricingtable .page .element5 .end {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.pricingtable .page .element6 .end {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}

@@ -1,0 +1,192 @@
+.innercomponent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.innercomponent .heading {
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: capitalize;
+    margin-top: 1rem;
+    padding: 0rem 1rem;
+}
+.innercomponent .line {
+    width: 100%;
+    height: 1px;
+    color: gray;
+    background-color: grey;
+    margin: 1rem 0rem;
+}
+.innercomponent .page {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    padding-top: 0rem;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.innercomponent .page .infomat {
+    display: flex;
+    align-items: center;
+    background-color: #3e009929;
+    justify-content: space-between;
+    color: #6600ff;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    text-transform: capitalize;
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+.innercomponent .page .infomat .images {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.innercomponent .page .infomat .images img {
+    width: 1rem;
+    height: 1rem;
+}
+
+.innercomponent .page .revenue {
+    display: flex;
+    flex-direction: column;
+}
+
+.innercomponent .page .light {
+    font-size: 0.8rem;
+    color: #c6c6c6;
+    text-transform: capitalize;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.innercomponent .page .revenue .options {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    text-transform: capitalize;
+}
+.innercomponent .page .revenue .options .active {
+    border: none;
+    color: white;
+    background-color: #5078e1;
+}
+.innercomponent .page .revenue .options li {
+    border: 1px solid #c6c6c6;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.3rem;
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.innercomponent .page .dropdowns {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.innercomponent .page .option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.innercomponent .page .option .first {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+}
+
+.innercomponent .page .option .first .opts {
+    display: flex;
+    gap: 0.3rem;
+
+}
+
+.innercomponent .page .option .first .opts .active {
+    border: none;
+    background-color: #5078e1;
+    color: #ffffff;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.2rem;
+    text-transform: capitalize;
+}
+.innercomponent .page .option .first .opts li {
+    border: 1px solid #c6c6c6;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.2rem;
+    text-transform: capitalize;
+}
+
+.innercomponent .page .second {
+    display: flex;
+    text-transform: capitalize;
+    flex-direction: column;
+}
+
+.innercomponent .page .second .opts{
+    display: flex;
+    gap: 0.5rem;
+}
+
+.innercomponent .page .second .opts .active{
+    border: none;
+    background-color: #5078e1;
+    color: #ffffff;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.2rem;
+    text-transform: capitalize;
+}
+.innercomponent .page .second .opts li{
+    border: 1px solid #c6c6c6;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.2rem;
+    text-transform: capitalize;
+}
+
+.innercomponent .page .uom{
+    display: flex;
+    flex-direction: column;
+}
+
+.innercomponent .page .uom .value{
+    display:flex;
+    justify-content: space-between;
+    border: 1px solid #c6c6c6;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.innercomponent .page .buttons{
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0rem;
+    align-items: center;
+}
+
+.innercomponent .page .buttons .back{
+    border: 1px solid #c6c6c6;
+    border-radius: 0.3rem;
+    padding: 0.3rem 0.8rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.innercomponent .page .buttons .create{
+    border-radius: 0.3rem;
+    padding: 0.3rem 0.8rem;
+    font-weight: 700;
+    background-color: #5078e1;
+    color: #ffffff;
+    text-transform: capitalize;
+
+}

@@ -230,6 +230,7 @@
     overflow: hidden;
     overflow-y: scroll;
     scroll-behavior: smooth;
+    padding-bottom: 1rem;
 }
 .dashboard .pagecontain .pagecards .unitdetails .unitcards .unitcard{
     display: flex;
@@ -241,8 +242,28 @@
     gap:0.3rem;
     padding: 0.5rem;
     border: 1px solid #c6c6c6;
+
 }
 
+.dashboard  .pagecontain .pagecards .unitdetails .unitcards .unitcard .image{
+    position: relative;
+}
+.dashboard  .pagecontain .pagecards .unitdetails .unitcards .unitcard .image .delete img{
+    width: 1rem;
+    height: 1rem;
+}
+.dashboard  .pagecontain .pagecards .unitdetails .unitcards .unitcard .image .delete{
+    width: 1.3rem;
+    height: 1.3rem;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F5F7FA;
+    border-radius: 50%;
+    top: 10px;
+    right:10px;
+}
 .dashboard  .pagecontain .pagecards .unitdetails .unitcards .unitcard img{
     width:100%;
     border-radius: 0.5rem;
