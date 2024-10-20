@@ -22,7 +22,7 @@ const style = {
     borderRadius: "0.2rem",
 };
 
-const PrincingInnerTable = ({ opencondition, setopencondition }) => {
+const PrincingInnerTable = ({ opencondition, setopencondition,selectedOption  }) => {
     return (
         <Modal open={opencondition} onClose={() => setopencondition(false)}>
             <Box sx={style}>
@@ -40,7 +40,7 @@ const PrincingInnerTable = ({ opencondition, setopencondition }) => {
                         <div className="line">.</div>
                         <div className="page">
                             <div className="infomat">
-                                <li>Primary Pricing Component</li>
+                                <li>{selectedOption } Pricing Component</li>
                                 <li className="images">
                                     <img src={ibtn} alt="" />
                                 </li>

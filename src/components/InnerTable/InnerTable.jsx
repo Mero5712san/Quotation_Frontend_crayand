@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import "../../Styles/CenterBox.css";
@@ -21,7 +21,35 @@ const style = {
     borderRadius: "0.2rem",
 };
 
-const InnerTable = ({ opencondition, setopencondition }) => {
+const InnerTable = ({ opencondition, setopencondition, selectedOption }) => {
+    const [Color, setColor] = useState("#B3776D");
+    const [bgColor, setbgColor] = useState("#FEEAEA80");
+
+    useEffect(() => {
+        if (selectedOption === "Primary") {
+            setColor("#B3776D");
+            setbgColor("#FEEAEA80");
+        } else if (selectedOption === "Secondary") {
+            setColor("#896DB3");
+            setbgColor("#EDE4FE80");
+        } else if (selectedOption === "One Time Charges") {
+            setColor("#6DAFB3");
+            setbgColor("#DBF0F180");
+        } else if (selectedOption === "Refundables") {
+            setColor("#6D80B3");
+            setbgColor("#E4EDFF80");
+        } else if (selectedOption === "Inventory Item") {
+            setColor("#B3A16D");
+            setbgColor("#FFFAD880");
+        } else if (selectedOption === "Parking Slot") {
+            setColor("#B3776D");
+            setbgColor("#FEEAEA80");
+        } else {
+            setColor("#B3776D");
+            setbgColor("#FEEAEA80");
+        }
+    }, [selectedOption]);
+
     return (
         <Modal open={opencondition} onClose={() => setopencondition(false)}>
             <Box sx={style}>
@@ -38,8 +66,14 @@ const InnerTable = ({ opencondition, setopencondition }) => {
                         <div className="heading">pricing table</div>
                         <div className="line">.</div>
                         <div className="page">
-                            <div className="infomat">
-                                <li>refundable price component</li>
+                            <div
+                                className="infomat"
+                                style={{
+                                    color: Color,
+                                    backgroundColor: bgColor,
+                                }}
+                            >
+                                <li>{selectedOption} component</li>
                                 <li className="images">
                                     <img src={ibtn} alt="" />
                                 </li>

@@ -1,63 +1,57 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Divider } from "@mui/material";
-import PricingTable from "../PricingTable/PricingTable"; // Import PricingTable
+import PricingTable from "../PricingTable/PricingTable";
 import Amenities from "../Amenities/Amenities";
 import Utilities from "../Utilities/Utilities";
 import Remove from "../Remove/Remove";
 import Discount from "../Discount/Discount";
+import { GetoptionsAPI } from "../../utils/API/API";
+import axios from "axios";
 
 export default function PositionedMenu() {
     const [anchorEl, setAnchorEl] = useState(null);
-    const [openModal, setOpenModal] = useState(false); // State to control modal
-    const [OpenAmenities, setOpenAmenities] = useState(false); // State to control Amenities modal
-    const [OpenUtilities, setOpenUtilities] = useState(false); // State to control Utilities modal
-    const [OpenDiscount,  setOpenDiscount] = useState(false); // State to control Discount modal
-    const [OpenRemove,  setOpenRemove] = useState(false); // State to control Remove modal
+    const [openModal, setOpenModal] = useState(false);
+    const [OpenAmenities, setOpenAmenities] = useState(false);
+    const [OpenUtilities, setOpenUtilities] = useState(false);
+    const [OpenDiscount, setOpenDiscount] = useState(false);
+    const [OpenRemove, setOpenRemove] = useState(false);
+
+    const [Options, setOptions] = useState([]);
 
     const open = Boolean(anchorEl);
-
-    // Handles Menu click
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    // Handles Menu close
     const handleClose = () => {
         setAnchorEl(null);
     };
 
-    // Handles opening the modal for "Add Pricing Component"
-    const handleOpenModal = () => {
-        setOpenModal(true);
-        handleClose(); // Close the menu when modal opens
+    const fetchOptions = async () => {
+        try {
+            const response = await axios.get(GetoptionsAPI);
+            if (response.status === 200) setOptions(response.data);
+        } catch (error) {
+            console.log("Error while fetching data", error);
+        }
     };
 
-    const handeAmentiesOpen = () =>{
-        setOpenAmenities(true);
-        handleClose();
-    }
+    useEffect(() => {
+        fetchOptions();
+    }, []);
 
-    const handeDiscountOpen = () =>{
-        setOpenDiscount(true);
-        handleClose();
-    }
-
-    const handeRemoveOpen = () =>{
-        setOpenRemove(true);
-        handleClose();
-    }
-
-    const handleUtilitiesOpen = () =>{
-        setOpenUtilities(true);
-        handleClose();
-    }
-
-    // Handles closing the modal
-    const handleCloseModal = () => setOpenModal(false);
+    // Map option labels to corresponding functions
+    const optionHandlers = {
+        "Add Pricing Component": () => { setOpenModal(true); handleClose(); },
+        "Add Amenities": () => { setOpenAmenities(true); handleClose(); },
+        "Add Utilities": () => { setOpenUtilities(true); handleClose(); },
+        "Add Discount": () => { setOpenDiscount(true); handleClose(); },
+        "Remove Component": () => { setOpenRemove(true); handleClose(); },
+    };
 
     return (
         <div>
@@ -97,88 +91,44 @@ export default function PositionedMenu() {
                     },
                 }}
             >
-                <MenuItem
-                    onClick={handleOpenModal}
-                    sx={{
-                        fontSize: "14px",
-                        color: "#516484",
-                        padding: "2px 16px",
-                    }}
-                >
-                    Add Pricing Component
-                </MenuItem>
-                <Divider sx={{ margin: 0 }} />
-                <MenuItem
-                    onClick={handeAmentiesOpen}
-                    sx={{
-                        fontSize: "14px",
-                        color: "#516484",
-                        padding: "2px 16px",
-                    }}
-                >
-                    Add Amenities
-                </MenuItem>
-                <Divider sx={{ margin: 0 }} />
-                <MenuItem
-                    onClick={handleUtilitiesOpen}
-                    sx={{
-                        fontSize: "14px",
-                        color: "#516484",
-                        padding: "2px 16px",
-                    }}
-                >
-                    Add Utilities
-                </MenuItem>
-                <Divider sx={{ margin: 0 }} />
-                <MenuItem
-                    onClick={handeDiscountOpen}
-                    sx={{
-                        fontSize: "14px",
-                        color: "#516484",
-                        padding: "2px 16px",
-                    }}
-                >
-                    Add Discount
-                </MenuItem>
-                <Divider sx={{ margin: 0 }} />
-                <MenuItem
-                    onClick={handeRemoveOpen}
-                    sx={{
-                        fontSize: "14px",
-                        color: "#516484",
-                        padding: "2px 16px",
-                    }}
-                >
-                    Remove Component
-                </MenuItem>
+                {Options.filter(option => option.is_active).map((option, index) => (
+                    <React.Fragment key={option.id}>
+                        <MenuItem
+                            onClick={optionHandlers[option.option] || handleClose}
+                            sx={{
+                                fontSize: "14px",
+                                color: "#516484",
+                                padding: "2px 16px",
+                            }}
+                        >
+                            {option.option}
+                        </MenuItem>
+                        {index < Options.length - 1 && <Divider sx={{ margin: 0 }} />}
+                    </React.Fragment>
+                ))}
             </Menu>
 
-            {/* Pricing Table Modal */}
+            {/* Modals */}
             <PricingTable
-                opencondition={openModal} // Modal open state
-                setopencondition={setOpenModal} // Method to close modal
+                opencondition={openModal}
+                setopencondition={setOpenModal}
             />
-
             <Amenities
-                opencondition={OpenAmenities} // Modal open state
-                setopencondition={setOpenAmenities} // Method to close modal
+                opencondition={OpenAmenities}
+                setopencondition={setOpenAmenities}
             />
-
             <Utilities
-                opencondition={OpenUtilities} // Modal open state
-                setopencondition={setOpenUtilities} // Method to close modal
+                opencondition={OpenUtilities}
+                setopencondition={setOpenUtilities}
             />
-
             <Remove
-                opencondition={OpenRemove} // Modal open state
-                setopencondition={setOpenRemove} // Method to close modal
+                opencondition={OpenRemove}
+                setopencondition={setOpenRemove}
             />
-
             <Discount
-                opencondition={OpenDiscount} // Modal open state
-                setopencondition={setOpenDiscount} // Method to close modal
+                opencondition={OpenDiscount}
+                setopencondition={setOpenDiscount}
             />
-             
         </div>
     );
 }

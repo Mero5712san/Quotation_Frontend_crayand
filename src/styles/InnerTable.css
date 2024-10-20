@@ -32,9 +32,9 @@
 .innercomponent .page .infomat {
     display: flex;
     align-items: center;
-    background-color: #FEEAEA80;
+    /* background-color: #FEEAEA80; */
     justify-content: space-between;
-    color: #B3776D;
+    /* color: #B3776D; */
     font-weight: 500;
     border-radius: 0.5rem;
     text-transform: capitalize;

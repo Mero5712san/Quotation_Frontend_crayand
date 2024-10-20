@@ -1,0 +1,11 @@
+export const units = "/master/unitdetails"
+export const amenities = "/master/amenities"
+export const utilities = "/master/utilities"
+export const options = "/master/options"
+export const pricing = "/master/pricing"
+export const quotationdetails = "/master/quotationdetails"
+export const revenue = "/master/revenue"
+export const gallery = "/master/gallery/:id"
+export const unitdetails = "/master/unitdetails/:id"
+
+export const userdetails =  "/users/userdetails"

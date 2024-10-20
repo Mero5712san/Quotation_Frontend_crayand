@@ -1,35 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ibtn from "../../assets/i.svg";
 import "../../styles/Tablelist.css";
 import InnerTable from "../InnerTable/InnerTable";
 import PrincingInnerTable from "../InnerTable/PricingInnerTable";
+import { GetpricingAPI } from "../../utils/API/API";
+import axios from "axios";
+
 
 const Tablelist = ({ setopencondition }) => {
-    const [isInnerTableOpen, setIsInnerTableOpen] = useState(false); // State to control the inner table modal
-    const [Pricetableopen , Setpricetableopen] = useState(false)
-    
-    const handlePrimaryTable = () =>{
-        Setpricetableopen(true)
-    }
-    const handlePrimaryClick = () => {
-        setIsInnerTableOpen(true); // Open the InnerTable modal
-        // setopencondition(false); // Close the PricingTable modal
+    const [isInnerTableOpen, setIsInnerTableOpen] = useState(false); 
+    const [Pricetableopen, Setpricetableopen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(""); // Track the selected option
+    const [List , setList] = useState([])
+
+    const handleTableClick = (item) => {
+        setSelectedOption(item);
+        if (item === "Primary") {
+            Setpricetableopen(true);
+        } else {
+            setIsInnerTableOpen(true);
+        }
     };
+
+    const fetchOptions = async () => {
+        try {
+            const response = await axios.get(GetpricingAPI);
+            if (response.status === 200) 
+                setList(response.data);
+        } catch (error) {
+            console.log("Error while fetching data", error);
+        }
+    };
+
+    useEffect(()=>{
+        fetchOptions()
+    },[])
+
+    // console.log(List)
 
     return (
         <div className="pricingtable">
             <div className="heading">Pricing Table</div>
             <div className="line"></div>
             <div className="page">
-                {/* Render elements dynamically to avoid repetitive code */}
-                {["Primary", "Secondary", "One Time Charges", "Refundables", "Inventory Item", "Parking Slot"].map((item, index) => (
-                    <div className={`element${index + 1}`} key={index} onClick={item === "Primary" ? handlePrimaryTable : handlePrimaryClick}>
+                {List.map((item, index) => (
+                    <div 
+                        className={`element${index + 1}`} 
+                        key={index} 
+                        onClick={() => handleTableClick(item.pricing_on)}
+                    >
                         <div className="start">
                             <li className="number">{String(index + 1).padStart(2, '0')}</li>
-                            <li>{item}</li>
+                            <li>{item.pricing_on}</li>
                         </div>
                         <div className="end">
-                            <li><img src={ibtn} alt="" /></li>
+                            <li><img src={ibtn} alt="info" /></li>
                             <li>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="5.538" height="10.5" viewBox="0 0 5.538 10.5">
                                     <path
@@ -43,9 +68,16 @@ const Tablelist = ({ setopencondition }) => {
                         </div>
                     </div>
                 ))}
-                <InnerTable opencondition={isInnerTableOpen} setopencondition={setIsInnerTableOpen} />
-                <PrincingInnerTable  opencondition={Pricetableopen} setopencondition={Setpricetableopen} />
-
+                <InnerTable 
+                    opencondition={isInnerTableOpen} 
+                    setopencondition={setIsInnerTableOpen} 
+                    selectedOption={selectedOption} // Pass selected option
+                />
+                <PrincingInnerTable  
+                    opencondition={Pricetableopen} 
+                    setopencondition={Setpricetableopen} 
+                    selectedOption={selectedOption} // Pass selected option
+                />
             </div>
         </div>
     );

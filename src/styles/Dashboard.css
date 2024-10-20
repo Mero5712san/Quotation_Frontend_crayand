@@ -173,9 +173,9 @@
     display: flex;
     align-items: center;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     /* justify-content: space-around; */
-    font-weight: 600;
+    font-weight: 700;
     margin-top: 0.5rem;
     gap: 1.5rem;
 }
@@ -185,13 +185,14 @@
     font-weight: 500;
     color: #5e5e5f;
     text-transform: uppercase;
+    margin-bottom: 0.4rem;
 }
 
 .dashboard .pagecontain .pagecards .secoption{
-    margin-top: 1.5rem;
+    margin-top: 1.2rem;
     display: flex;
     flex-direction: column;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 600;
     /* margin-left:1rem; */
 }
@@ -205,6 +206,7 @@
     font-weight: 500;
     color: #5e5e5f;
     text-transform: uppercase;
+    margin-bottom: 0.3rem;
 }
 
 .dashboard .pagecontain .pagecards .unitdetails{
@@ -236,7 +238,8 @@
     display: flex;
     flex-direction: column;
     width:48%;
-    /* height:34vh; */
+    /* height:35vh; */
+    height:16rem;
     border-radius: 0.5rem;
     background-color: #ffffff;
     gap:0.3rem;
