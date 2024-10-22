@@ -5,42 +5,62 @@ import profile from "../../assets/adprofile.png";
 import home from "../../assets/home.svg";
 import bed from "../../assets/bed.svg";
 import bath from "../../assets/bath.svg";
-// import sample from "../../assets/unit2.png";
 import del from "../../assets/delete.svg";
 import "../../styles/Dashboard.css";
 import PositionedMenu from "../../components/Options/Options";
 import CustomizedMenus from "../../components/Dropdown/Dropdown";
 import UnitDetails from "../../components/BigModel/UnitDetails";
-import { GetquotationdetailsAPI, GetunitAPI, GetUserDetailsApI } from "../../utils/API/API";
+import {
+    GetquotationdetailsAPI,
+    GetunitAPI,
+    GetUserDetailsApI,
+} from "../../utils/API/API";
 import axios from "axios";
+import { formatDate } from "../../utils/DateFormat/DateFormat";
+import {
+    addMasterQuotationDetails,
+    addMasterUnits,
+    addMasterUsers,
+} from "../../slice/MasterAPISlice";
+import { useDispatch, useSelector } from "react-redux";
+
 const Dashboard = () => {
     const [OpenUnitDetails, setOpenUnitDetails] = useState(false); // State to control modal
-    const [Units, setUnits] = useState([]);
-    const [QuotationDetails, setQuotationDetails] = useState([]);
-    const [userid , setuserid] = useState(2)
-    const [Selectedid , setSelectedid] = useState(1)
-    const [UserDetails, setUserDetails] = useState([]); // State to store user details
-    // const Selectedid = 0;
-    const handeUnitDetailsOpen = () => {
+    // const [Units, setUnits] = useState([]);
+    // const [QuotationDetails, setQuotationDetails] = useState([]);
+    const [userid, setuserid] = useState(1);
+    const [Selectedid, setSelectedid] = useState(1);
+    // const [UserDetails, setUserDetails] = useState([]); // State to store user details
+    const [selectedUnitId, setSelectedUnitId] = useState(null); // State to store the selected unit ID
+    const userData = useSelector((s) => s.masterUser);
+    const unitData = useSelector((s) => s.masterUnit);
+    const quotationData = useSelector((s) => s.masterquotationDetail);
+    // const UserDetails = userData
+    const dispatch = useDispatch();
+
+    const handeUnitDetailsOpen = (unitId) => {
+        setSelectedUnitId(unitId); // Set the selected unit ID
         setOpenUnitDetails(true);
-        handleClose();
     };
 
-    const fetchUserDetails = async () =>{
+    const fetchUserDetails = async () => {
         try {
-            const response = await axios.get(GetUserDetailsApI)
-            if(response.status == 200) 
-                setUserDetails(response.data)
-                setSelectedid(response.data[userid].id)
+            const response = await axios.get(GetUserDetailsApI);
+            if (response.status == 200)
+                // setUserDetails(response.data);
+                setSelectedid(response.data[userid].id);
+            dispatch(addMasterUsers(response.data));
         } catch (error) {
-            console.log("error while fetching data" , error)
+            console.log("error while fetching data", error);
         }
-    }
+    };
 
     const fetchUnitDetails = async () => {
         try {
             const response = await axios.get(GetunitAPI);
-            if (response.status === 200) setUnits(response.data);
+            if (response.status === 200)
+                // setUnits(response.data);
+                dispatch(addMasterUnits(response.data));
         } catch (error) {
             console.log("error while fetching data", error);
         }
@@ -49,15 +69,12 @@ const Dashboard = () => {
     const fetchQuotationDetails = async () => {
         try {
             const response = await axios.get(GetquotationdetailsAPI);
-            if (response.status === 200) setQuotationDetails(response.data);
+            if (response.status === 200)
+                // setQuotationDetails(response.data);
+                dispatch(addMasterQuotationDetails(response.data));
         } catch (error) {
             console.log("error while fetching data", error);
         }
-    };
-
-    const formatDate = (timestamp) => {
-        const options = { day: "2-digit", month: "short", year: "2-digit" };
-        return new Date(timestamp).toLocaleDateString("en-GB", options);
     };
 
     useEffect(() => {
@@ -66,9 +83,10 @@ const Dashboard = () => {
         fetchUserDetails();
     }, []);
 
-    // console.log(UserDetails)
-    // console.log(Units);
-    // console.log(QuotationDetails);
+    // console.log("user data", userData);
+    // console.log("unit details ", unitData);
+    // console.log("Qoutation details", quotationData);
+
     return (
         <div className="dashboard">
             <div className="topbar">
@@ -79,33 +97,11 @@ const Dashboard = () => {
                     <li className="text">create quotation to existing lead</li>
                 </div>
                 <div>
-                    {/* <li className="text">casagrand</li>
-                    <li>
-                        <img src={dropdown} alt="" />
-                    </li> */}
                     <CustomizedMenus />
                 </div>
             </div>
             <div className="pagecontain">
-                <div className="toppath">
-                    <li>add contact</li>
-                    <li>
-                        <img src={bdropdown} alt="" />
-                    </li>
-                    <li>lead details</li>
-                    <li>
-                        <img src={bdropdown} alt="" />
-                    </li>
-                    <li>preview and create lead</li>
-                    <li>
-                        <img src={bdropdown} alt="" />
-                    </li>
-                    <li>quotation details</li>
-                    <li className="number">
-                        <span>4</span>
-                    </li>
-                    <li>preview and create</li>
-                </div>
+                <div className="toppath">{/* Other content */}</div>
                 <div className="pagecards">
                     <div className="leaddetails">
                         <div className="heading">
@@ -113,18 +109,40 @@ const Dashboard = () => {
                         </div>
                         <div className="profileinfo">
                             <div className="image">
-                                <img src={UserDetails[userid] ? UserDetails[userid].profile : "loading ..."} alt="profile" />
+                                <img
+                                    src={
+                                        userData[userid]
+                                            ? userData[userid].profile
+                                            : "loading ..."
+                                    }
+                                    alt="profile"
+                                />
                             </div>
                             <div>
                                 <div className="profinfo">
-                                    <li className="name">{UserDetails[userid] ? UserDetails[userid].name : "loading ..."}</li>
-                                    <li className="tagit">{UserDetails[userid] ? UserDetails[userid].roll : "loading ..."}</li>
+                                    <li className="name">
+                                        {userData[userid]
+                                            ? userData[userid].name
+                                            : "loading ..."}
+                                    </li>
+                                    <li className="tagit">
+                                        {userData[userid]
+                                            ? userData[userid].roll
+                                            : "loading ..."}
+                                    </li>
                                 </div>
                                 <div className="profinfo">
                                     <li>
-                                        <span>+</span>91 {UserDetails[userid] ? UserDetails[userid].mobile : "loading ..."}
+                                        <span>+</span>91{" "}
+                                        {userData[userid]
+                                            ? userData[userid].mobile
+                                            : "loading ..."}
                                     </li>
-                                <li>{UserDetails[userid] ? UserDetails[userid].email : "loading ..."}</li>
+                                    <li>
+                                        {userData[userid]
+                                            ? userData[userid].email
+                                            : "loading ..."}
+                                    </li>
                                 </div>
                             </div>
                         </div>
@@ -140,9 +158,9 @@ const Dashboard = () => {
                                         lease start date
                                     </li>
                                     <li>
-                                        {QuotationDetails[Selectedid]
+                                        {quotationData[Selectedid]
                                             ? formatDate(
-                                                  QuotationDetails[Selectedid]
+                                                  quotationData[Selectedid]
                                                       .lease_start_date
                                               )
                                             : "Loading..."}
@@ -153,9 +171,9 @@ const Dashboard = () => {
                                         lease end date
                                     </li>
                                     <li>
-                                        {QuotationDetails[Selectedid]
+                                        {quotationData[Selectedid]
                                             ? formatDate(
-                                                  QuotationDetails[Selectedid]
+                                                  quotationData[Selectedid]
                                                       .lease_end_date
                                               )
                                             : "Loading..."}
@@ -166,9 +184,9 @@ const Dashboard = () => {
                                         rent start date
                                     </li>
                                     <li>
-                                        {QuotationDetails[Selectedid]
+                                        {quotationData[Selectedid]
                                             ? formatDate(
-                                                  QuotationDetails[Selectedid]
+                                                  quotationData[Selectedid]
                                                       .rent_start_date
                                               )
                                             : "Loading..."}
@@ -178,8 +196,8 @@ const Dashboard = () => {
                             <div className="secoption">
                                 <li className="lighttext">grace period</li>
                                 <li>
-                                    {QuotationDetails[Selectedid]
-                                        ? `${QuotationDetails[Selectedid].grace_period} days`
+                                    {quotationData[Selectedid]
+                                        ? `${quotationData[Selectedid].grace_period} days`
                                         : "Loading..."}
                                     <span>(beginning)</span>
                                 </li>
@@ -191,11 +209,13 @@ const Dashboard = () => {
                             <li>unit details</li>
                         </div>
                         <div className="unitcards">
-                            {Units.map((unit, index) => (
+                            {unitData.map((unit, index) => (
                                 <div className="unitcard" key={index}>
                                     <div
                                         className="image"
-                                        onClick={handeUnitDetailsOpen}
+                                        onClick={() =>
+                                            handeUnitDetailsOpen(unit.id)
+                                        }
                                     >
                                         <img src={unit.image_url} alt="" />
                                         <div className="delete">
@@ -204,7 +224,9 @@ const Dashboard = () => {
                                     </div>
                                     <div
                                         className="infos"
-                                        onClick={handeUnitDetailsOpen}
+                                        onClick={() =>
+                                            handeUnitDetailsOpen(unit.id)
+                                        }
                                     >
                                         <div className="nameprice">
                                             <li className="name">
@@ -237,9 +259,14 @@ const Dashboard = () => {
                                             </li>
                                         </div>
                                     </div>
-                                    <div className="customise">
+                                    <div
+                                        className="customise"
+                                        onClick={() => {
+                                            setSelectedUnitId(unit.id);
+                                        }}
+                                    >
                                         <li>
-                                            <PositionedMenu />
+                                            <PositionedMenu id={Selectedid} />
                                         </li>
                                     </div>
                                 </div>
@@ -309,6 +336,7 @@ const Dashboard = () => {
             <UnitDetails
                 opencondition={OpenUnitDetails}
                 setopencondition={setOpenUnitDetails}
+                id={selectedUnitId} // Pass the selected unit ID to the modal
             />
         </div>
     );

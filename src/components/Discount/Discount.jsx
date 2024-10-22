@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import "../../Styles/CenterBox.css";
@@ -12,6 +12,9 @@ import home from "../../assets/home.svg";
 import handbook from "../../assets/handbook.svg";
 import "../../styles/UnitDetails.css";
 import DiscountDropDown from "../Dropdown/DiscountDropDown";
+import axios from "axios";
+import { GetunitdetailsAPI } from "../../utils/API/API";
+
 const style = {
     position: "absolute",
     top: "50%",
@@ -25,23 +28,43 @@ const style = {
     borderRadius: "0.2rem",
 };
 
-const Discount = ({ opencondition, setopencondition }) => {
+const Discount  = ({ opencondition, setopencondition, id }) => {
+    const [unitDetails, setUnitDetails] = useState(null);
+
+    const fetchUnitDetails = async () => {
+        try {
+            // Replace :id with the actual id in the API endpoint
+            const url = GetunitdetailsAPI.replace(':id', id);
+            const response = await axios.get(url);
+            if (response.status === 200) {
+                // Assuming the API returns an array, set the first element
+                setUnitDetails(response.data[0]);
+            }
+        } catch (error) {
+            console.log("Error while fetching data", error);
+        }
+    };
+
+    useEffect(() => {
+        if (id) {
+            fetchUnitDetails();
+        }
+    }, [id]);
+
+    if (!unitDetails) return null; // Show nothing or a loading state while fetching
+
     return (
         <div>
             <Modal open={opencondition} onClose={() => setopencondition(false)}>
                 <Box sx={style}>
                     <div className="centerbox">
                         <div className="close">
-                            <li
-                                onClick={() => setopencondition(false)}
-                                style={{ cursor: "pointer" }}
-                            >
-                                {/* You can add a close icon here */}
+                            <li onClick={() => setopencondition(false)} style={{ cursor: "pointer" }}>
                                 <img src={close} alt="close" />
                             </li>
                         </div>
                         <div className="unitdetails">
-                            <div className="heading">unit details</div>
+                            <div className="heading">Unit Details</div>
                             <div className="line">.</div>
                             <div className="page">
                                 <div className="first">
@@ -51,65 +74,36 @@ const Discount = ({ opencondition, setopencondition }) => {
                                         </div>
                                         <div className="mini">
                                             <div className="upper">
-                                                <li>
-                                                    <img src={unit2} alt="" />
-                                                </li>
-                                                <li>
-                                                    <img src={unit2} alt="" />
-                                                </li>
+                                                <li><img src={unit2} alt="" /></li>
+                                                <li><img src={unit2} alt="" /></li>
                                             </div>
                                             <div className="lower">
-                                                <li>
-                                                    <img src={unit2} alt="" />
-                                                </li>
-                                                <li>
-                                                    <img src={unit} alt="" />
-                                                </li>
+                                                <li><img src={unit2} alt="" /></li>
+                                                <li><img src={unit} alt="" /></li>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="infos">
                                         <div className="nameinfo">
-                                            <li className="name">
-                                                jumeirah estate
-                                            </li>
-                                            <div className="version">
-                                                UNIT-1234
-                                            </div>
+                                            <li className="name">{unitDetails.name || "N/A"}</li>
+                                            <div className="version">UNIT-{unitDetails.id || "N/A"}</div>
                                         </div>
                                         <div className="address">
-                                            <li>
-                                                rubix apartment, k tower, floor
-                                                1
-                                            </li>
+                                            <li>{unitDetails.address || "N/A"}</li>
                                         </div>
                                         <div className="icons">
-                                            <li>
-                                                <img src={bed} alt="" />{" "}
-                                                <span>2</span>
-                                            </li>
-                                            <li>
-                                                <img src={bath} alt="" />{" "}
-                                                <span>2</span>
-                                            </li>
-                                            <li>
-                                                <img src={home} alt="" />{" "}
-                                                <span>2BHK</span>
-                                            </li>
-                                            <li>
-                                                <img src={sqft} alt="" />{" "}
-                                                <span>2Sq.Ft</span>
-                                            </li>
+                                            <li><img src={bed} alt="" /> <span>{unitDetails.bed_rooms || 0}</span></li>
+                                            <li><img src={bath} alt="" /> <span>{unitDetails.baths || 0}</span></li>
+                                            <li><img src={home} alt="" /> <span>{unitDetails.bhk_count || "N/A"}</span></li>
+                                            <li><img src={sqft} alt="" /> <span>{unitDetails.area || "N/A"}</span> sqft</li>
                                         </div>
-                                        <div className="line"> </div>
+                                        <div className="line"></div>
                                         <div className="handbook">
                                             <li>
                                                 <img src={handbook} alt="" />
-                                                <span>handbook</span>
+                                                <span>Handbook</span>
                                             </li>
-                                            <li className="detail">
-                                                view / downloads
-                                            </li>
+                                            <li className="detail">View / Downloads</li>
                                         </div>
                                     </div>
                                 </div>
@@ -193,4 +187,4 @@ const Discount = ({ opencondition, setopencondition }) => {
     );
 };
 
-export default Discount;
+export default Discount ;

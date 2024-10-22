@@ -12,7 +12,6 @@ export const GetquotationdetailsAPI = buildUrl(quotationdetails)
 export const GetrevenueAPI = buildUrl(revenue)
 export const GetgalleryAPI = buildUrl(gallery)
 export const GetunitdetailsAPI = buildUrl(unitdetails)
-
 export const GetUserDetailsApI =  buildUrl(userdetails)
 
 

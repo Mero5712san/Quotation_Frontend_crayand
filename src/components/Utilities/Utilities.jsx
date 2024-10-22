@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import "../../Styles/CenterBox.css";
 import close from "../../assets/close.svg";
-import clean from "../../assets/clean.svg"
+import clean from "../../assets/clean.svg";
 import Toggle from "../Toggle/ToggleButton";
-import Checkboxes from "../CheckBox/CheckBoxes";
-import amenity from "../../assets/amenity.png";
 import "../../styles/Amenties.css";
+import axios from "axios";
+import { GetutilitiesAPI } from "../../utils/API/API";
+import { formatDate } from "../../utils/DateFormat/DateFormat";
+import { useDispatch, useSelector } from "react-redux";
+import { addMasterUtilities } from "../../slice/MasterAPISlice";
+
 const style = {
     position: "absolute",
     top: "50%",
@@ -22,6 +26,48 @@ const style = {
 };
 
 const Utilities = ({ opencondition, setopencondition }) => {
+    // const [Utilities, setUtilities] = useState([]);
+    const [UtilityCount, setUtilityCount] = useState(0);
+    const [selectedAmount, setSelectedAmount] = useState(0);
+    const [toggleStates, setToggleStates] = useState({}); // Track toggle states
+    const UtilityData = useSelector((s)=>s.masterutilitie)
+    const dispatch  = useDispatch()
+
+
+    const fetchUtilities = async () => {
+        try {
+            const response = await axios.get(GetutilitiesAPI);
+            if (response.status === 200) 
+                // setUtilities(response.data);
+                dispatch(addMasterUtilities(response.data))
+
+        } catch (error) {
+            console.log("Error while fetching data", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUtilities();
+    }, []);
+
+    // Handle toggle change
+    const handleToggleChange = (index, price) => {
+        setToggleStates((prevState) => {
+            const newState = { ...prevState, [index]: !prevState[index] };
+
+            // Update count and amount
+            if (newState[index]) {
+                setUtilityCount((prev) => prev + 1);
+                setSelectedAmount((prev) => prev + price);
+            } else {
+                setUtilityCount((prev) => prev - 1);
+                setSelectedAmount((prev) => prev - price);
+            }
+
+            return newState;
+        });
+    };
+
     return (
         <div>
             <Modal open={opencondition} onClose={() => setopencondition(false)}>
@@ -32,129 +78,57 @@ const Utilities = ({ opencondition, setopencondition }) => {
                                 onClick={() => setopencondition(false)}
                                 style={{ cursor: "pointer" }}
                             >
-                                {/* You can add a close icon here */}
                                 <img src={close} alt="close" />
                             </li>
                         </div>
                         <div className="amenties">
-                            {/* Content inside the modal */}
                             <div className="heading">Add Utilities</div>
                             <div className="line">.</div>
                             <div className="page">
                                 <div className="infomatutility">
                                     <div className="start">
                                         <li>
-
                                             <img src={clean} alt="" />
                                         </li>
-                                        <li>05 total Utilities</li>
+                                        <li>{UtilityCount} total Utilities</li>
                                     </div>
                                     <div className="end">
-                                        <li>$ 200.00</li>
+                                        <li>$ {selectedAmount}</li>
                                     </div>
                                 </div>
                                 <div className="light">
                                     <li>Available Utilities</li>
                                 </div>
                                 <div className="elements">
-                                    <div className="bord">
-                                        <div className="element">
-                                            <div className="image">
-                                                <img src={amenity} alt="" />
-                                            </div>
-                                            <div className="details">
-                                                <div className="name">
-                                                    Utilities name
+                                    {UtilityData.map((utility, index) => (
+                                        <div className="bord" key={index}>
+                                            <div className="element">
+                                                <div className="image">
+                                                    <img src={`./images/Utilities/utility${index + 1}.png`} alt="" />
                                                 </div>
-                                                <div className="infos">
-                                                    <li>$ 200</li>
+                                                <div className="details">
+                                                    <div className="name">
+                                                        {utility.name}
+                                                    </div>
+                                                    <div className="infos">
+                                                        <li>$ {utility.price}</li>
+                                                        <li>
+                                                            valid {formatDate(utility.valid_from)} - {formatDate(utility.valid_to)}
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div className="toogle">
                                                     <li>
-                                                        valid feb 22 - 12 feb
-                                                        223
+                                                        <Toggle
+                                                            checked={!!toggleStates[index]}
+                                                            onChange={() => handleToggleChange(index, utility.price)}
+                                                        />
                                                     </li>
                                                 </div>
                                             </div>
-                                            <div className="toogle">
-                                                <li>
-                                                    <Toggle />
-                                                </li>
-                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="bord">
-                                        <div className="element">
-                                            <div className="image">
-                                                <img src={amenity} alt="" />
-                                            </div>
-                                            <div className="details">
-                                                <div className="name">
-                                                    Utilities name
-                                                </div>
-                                                <div className="infos">
-                                                    <li>$ 200</li>
-                                                    <li>
-                                                        valid feb 22 - 12 feb
-                                                        223
-                                                    </li>
-                                                </div>
-                                            </div>
-                                            <div className="toogle">
-                                                <li>
-                                                    <Toggle />
-                                                </li>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="bord">
-                                        <div className="element">
-                                            <div className="image">
-                                                <img src={amenity} alt="" />
-                                            </div>
-                                            <div className="details">
-                                                <div className="name">
-                                                    Utilities name
-                                                </div>
-                                                <div className="infos">
-                                                    <li>$ 200</li>
-                                                    <li>
-                                                        valid feb 22 - 12 feb
-                                                        223
-                                                    </li>
-                                                </div>
-                                            </div>
-                                            <div className="toogle">
-                                                <li>
-                                                    <Toggle />
-                                                </li>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="bord">
-                                        <div className="element">
-                                            <div className="image">
-                                                <img src={amenity} alt="" />
-                                            </div>
-                                            <div className="details">
-                                                <div className="name">
-                                                    Utilities name
-                                                </div>
-                                                <div className="infos">
-                                                    <li>$ 200</li>
-                                                    <li>
-                                                        valid feb 22 - 12 feb
-                                                        223
-                                                    </li>
-                                                </div>
-                                            </div>
-                                            <div className="toogle">
-                                                <li>
-                                                    <Toggle />
-                                                </li>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    ))}
                                 </div>
-                                
                                 <div className="buttons">update & save</div>
                             </div>
                         </div>

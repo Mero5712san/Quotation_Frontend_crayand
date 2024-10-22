@@ -7,6 +7,10 @@ import close from "../../assets/close.svg";
 import ibtn from "../../assets/i.svg";
 import PricingComponentDropDown from "../Dropdown/PricingComponentDropDown";
 import TaxGroupDropDown from "../Dropdown/TaxGroupDropDown";
+import axios from "axios";
+import { GetrevenueAPI } from "../../utils/API/API";
+import { useDispatch, useSelector } from "react-redux";
+import { addMasterRevenueType } from "../../slice/MasterAPISlice";
 
 const style = {
     position: "absolute",
@@ -24,6 +28,15 @@ const style = {
 const InnerTable = ({ opencondition, setopencondition, selectedOption }) => {
     const [Color, setColor] = useState("#B3776D");
     const [bgColor, setbgColor] = useState("#FEEAEA80");
+    const [uomvalue, setuomvalue] = useState(200);
+    const [activeRevenue, setActiveRevenue] = useState("lease");
+    const [activeChargeable, setActiveChargeable] = useState("yes");
+    const [activeComponentBasedOn, setActiveComponentBasedOn] =
+        useState("amount");
+    // const [RevenueType, setRevenueType] = useState([]);
+    const dispatch = useDispatch()
+    const RevenueType = useSelector((s)=>s.masterrevenuetype)
+
 
     useEffect(() => {
         if (selectedOption === "Primary") {
@@ -49,6 +62,28 @@ const InnerTable = ({ opencondition, setopencondition, selectedOption }) => {
             setbgColor("#FEEAEA80");
         }
     }, [selectedOption]);
+
+    const handleUomChange = (event) => {
+        setuomvalue(event.target.value);
+    };
+
+    const fetchRevenueType = async () => {
+        try {
+            const response = await axios.get(GetrevenueAPI);
+            if (response.status == 200) 
+                // setRevenueType(response.data);
+                dispatch(addMasterRevenueType(response.data))
+        } catch (error) {
+            console.log("Error while fecting data", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchRevenueType();
+    },[]);
+
+    // console.log(GetrevenueAPI)
+    // console.log(RevenueType)
 
     return (
         <Modal open={opencondition} onClose={() => setopencondition(false)}>
@@ -78,15 +113,31 @@ const InnerTable = ({ opencondition, setopencondition, selectedOption }) => {
                                     <img src={ibtn} alt="" />
                                 </li>
                             </div>
+
+                            {/* Revenue Type */}
                             <div className="revenue">
                                 <div className="light">revenue type</div>
                                 <div className="options">
-                                    <li className="active">lease</li>
-                                    <li>sales</li>
-                                    <li>manage</li>
-                                    <li>stay</li>
+                                    {RevenueType.map(
+                                        (type, index) => (
+                                            <li
+                                                key={index}
+                                                className={
+                                                    activeRevenue === type.revenue_type
+                                                        ? "active"
+                                                        : ""
+                                                }
+                                                onClick={() =>
+                                                    setActiveRevenue(type.revenue_type)
+                                                }
+                                            >
+                                                {type.revenue_type}
+                                            </li>
+                                        )
+                                    )}
                                 </div>
                             </div>
+
                             <div className="dropdowns">
                                 <div className="first">
                                     <li className="light">pricing component</li>
@@ -103,34 +154,81 @@ const InnerTable = ({ opencondition, setopencondition, selectedOption }) => {
                                     </li>
                                 </div>
                             </div>
+
+                            {/* Chargeable Options */}
                             <div className="option">
                                 <div className="first">
                                     <div className="light">chargeable</div>
                                     <div className="opts">
-                                        <li className="active">yes</li>
-                                        <li>no</li>
+                                        {["yes", "no"].map((option) => (
+                                            <li
+                                                key={option}
+                                                className={
+                                                    activeChargeable === option
+                                                        ? "active"
+                                                        : ""
+                                                }
+                                                onClick={() =>
+                                                    setActiveChargeable(option)
+                                                }
+                                            >
+                                                {option}
+                                            </li>
+                                        ))}
                                     </div>
                                 </div>
+
+                                {/* Component Based On Options */}
                                 <div className="second">
                                     <div className="light">
                                         Component Based On
                                     </div>
                                     <div className="opts">
-                                        <li className="active">amount</li>
-                                        <li>UOM</li>
-                                        <li>%</li>
+                                        {["amount", "UOM", "%"].map(
+                                            (option) => (
+                                                <li
+                                                    key={option}
+                                                    className={
+                                                        activeComponentBasedOn ===
+                                                        option
+                                                            ? "active"
+                                                            : ""
+                                                    }
+                                                    onClick={() =>
+                                                        setActiveComponentBasedOn(
+                                                            option
+                                                        )
+                                                    }
+                                                >
+                                                    {option}
+                                                </li>
+                                            )
+                                        )}
                                     </div>
                                 </div>
                             </div>
+
                             <div className="uom">
                                 <div className="light">UOM Value</div>
                                 <div className="value">
-                                    <li>200</li>
+                                    <li>
+                                        <input
+                                            type="text"
+                                            value={uomvalue}
+                                            onChange={handleUomChange}
+                                        />
+                                    </li>
                                     <li>$ / monthly</li>
                                 </div>
                             </div>
                             <div className="buttons">
-                                <div className="back"> back</div>
+                                <div
+                                    className="back"
+                                    onClick={() => setopencondition(false)}
+                                >
+                                    {" "}
+                                    back
+                                </div>
                                 <div className="create">
                                     Create Pricing Component
                                 </div>

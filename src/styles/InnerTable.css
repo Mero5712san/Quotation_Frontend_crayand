@@ -38,7 +38,7 @@
     font-weight: 500;
     border-radius: 0.5rem;
     text-transform: capitalize;
-    padding: 1rem;
+    padding:0.5rem 1rem;
     font-size: 0.9rem;
 }
 
@@ -158,12 +158,22 @@
     padding-bottom: 0.4rem;
 }
 
+.innercomponent .page .uom .value li{
+    padding: 0.5rem;
+}
+.innercomponent .page .uom .value input{
+    outline: none ;
+    padding:0.25rem;
+    width:20vw;
+    border: none;
+}
 .innercomponent .page .uom .value{
     display:flex;
     justify-content: space-between;
     border: 1px solid #c6c6c6;
+    align-items: center;
     border-radius: 0.3rem;
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
     font-size: 0.9rem;
 }
 
@@ -180,6 +190,7 @@
     border-radius: 0.3rem;
     padding: 0.3rem 0.8rem;
     font-weight: 700;
+    cursor: pointer;
     text-transform: capitalize;
 }
 
@@ -190,6 +201,7 @@
     background-color: #5078e1;
     color: #ffffff;
     text-transform: capitalize;
+    cursor: pointer;
 }
 
 .innercomponent .page .graphcontainers{

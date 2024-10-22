@@ -11,17 +11,19 @@ import Remove from "../Remove/Remove";
 import Discount from "../Discount/Discount";
 import { GetoptionsAPI } from "../../utils/API/API";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addMasterOptions } from "../../slice/MasterAPISlice";
 
-export default function PositionedMenu() {
+export default function PositionedMenu({ id }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [OpenAmenities, setOpenAmenities] = useState(false);
     const [OpenUtilities, setOpenUtilities] = useState(false);
     const [OpenDiscount, setOpenDiscount] = useState(false);
     const [OpenRemove, setOpenRemove] = useState(false);
-
-    const [Options, setOptions] = useState([]);
-
+    // const [Options, setOptions] = useState([]);
+    const OptionData = useSelector((s)=>s.masteroption)
+    const dispatch =  useDispatch()
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -34,7 +36,9 @@ export default function PositionedMenu() {
     const fetchOptions = async () => {
         try {
             const response = await axios.get(GetoptionsAPI);
-            if (response.status === 200) setOptions(response.data);
+            if (response.status === 200) 
+                // setOptions(response.data);
+                dispatch(addMasterOptions(response.data))
         } catch (error) {
             console.log("Error while fetching data", error);
         }
@@ -46,12 +50,30 @@ export default function PositionedMenu() {
 
     // Map option labels to corresponding functions
     const optionHandlers = {
-        "Add Pricing Component": () => { setOpenModal(true); handleClose(); },
-        "Add Amenities": () => { setOpenAmenities(true); handleClose(); },
-        "Add Utilities": () => { setOpenUtilities(true); handleClose(); },
-        "Add Discount": () => { setOpenDiscount(true); handleClose(); },
-        "Remove Component": () => { setOpenRemove(true); handleClose(); },
+        "Add Pricing Component": () => {
+            setOpenModal(true);
+            handleClose();
+        },
+        "Add Amenities": () => {
+            setOpenAmenities(true);
+            handleClose();
+        },
+        "Add Utilities": () => {
+            setOpenUtilities(true);
+            handleClose();
+        },
+        "Add Discount": () => {
+            setOpenDiscount(true);
+            handleClose();
+        },
+        "Remove Component": () => {
+            setOpenRemove(true);
+            handleClose();
+        },
     };
+
+
+    // console.log(id)
 
     return (
         <div>
@@ -91,21 +113,27 @@ export default function PositionedMenu() {
                     },
                 }}
             >
-                {Options.filter(option => option.is_active).map((option, index) => (
-                    <React.Fragment key={option.id}>
-                        <MenuItem
-                            onClick={optionHandlers[option.option] || handleClose}
-                            sx={{
-                                fontSize: "14px",
-                                color: "#516484",
-                                padding: "2px 16px",
-                            }}
-                        >
-                            {option.option}
-                        </MenuItem>
-                        {index < Options.length - 1 && <Divider sx={{ margin: 0 }} />}
-                    </React.Fragment>
-                ))}
+                {OptionData.filter((option) => option.is_active).map(
+                    (option, index) => (
+                        <React.Fragment key={option.id}>
+                            <MenuItem
+                                onClick={
+                                    optionHandlers[option.option] || handleClose
+                                }
+                                sx={{
+                                    fontSize: "14px",
+                                    color: "#516484",
+                                    padding: "2px 16px",
+                                }}
+                            >
+                                {option.option}
+                            </MenuItem>
+                            {index < OptionData.length - 1 && (
+                                <Divider sx={{ margin: 0 }} />
+                            )}
+                        </React.Fragment>
+                    )
+                )}
             </Menu>
 
             {/* Modals */}
@@ -124,10 +152,12 @@ export default function PositionedMenu() {
             <Remove
                 opencondition={OpenRemove}
                 setopencondition={setOpenRemove}
+                id={id}
             />
             <Discount
                 opencondition={OpenDiscount}
                 setopencondition={setOpenDiscount}
+                id={id}
             />
         </div>
     );

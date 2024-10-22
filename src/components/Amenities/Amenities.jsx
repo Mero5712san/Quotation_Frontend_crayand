@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import "../../Styles/CenterBox.css";
 import close from "../../assets/close.svg";
 import hut from "../../assets/hut.svg";
 import Toggle from "../Toggle/ToggleButton";
-import Checkboxes from "../CheckBox/CheckBoxes";
-import amenity from "../../assets/amenity.png";
+import Checkbox from "../CheckBox/CheckBoxes";
 import "../../styles/Amenties.css";
+import { GetamenitiesAPI } from "../../utils/API/API";
+import axios from "axios";
+import { formatDate } from "../../utils/DateFormat/DateFormat";
+import { useDispatch, useSelector } from "react-redux";
+import { addMasterAmenities } from "../../slice/MasterAPISlice";
+
 const style = {
     position: "absolute",
     top: "50%",
@@ -22,6 +27,70 @@ const style = {
 };
 
 const Amenities = ({ opencondition, setopencondition }) => {
+    // const [Amenities, setAmenities] = useState([]);
+    const [toggleStates, setToggleStates] = useState({}); // State for toggle switches
+    const [checkboxStates, setCheckboxStates] = useState({}); // State for checkboxes
+    const [selectedCount, setSelectedCount] = useState(0);
+    const [selectedAmount, setSelectedAmount] = useState(0);
+    const AmenityData = useSelector((s)=>s.masteramenitie)
+    const dispatch = useDispatch()
+
+    const fetchAmenities = async () => {
+        try {
+            const response = await axios.get(GetamenitiesAPI);
+            if (response.status === 200) 
+                // setAmenities(response.data);
+                dispatch(addMasterAmenities(response.data))
+        } catch (error) {
+            console.log("Error while fetching data", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchAmenities();
+    }, []);
+
+    // Handle toggle change
+    const handleToggleChange = (index, price) => {
+        setToggleStates((prevState) => {
+            const newState = { ...prevState, [index]: !prevState[index] };
+
+            // Update count and amount
+            if (newState[index]) {
+                setSelectedCount((prev) => prev + 1);
+                if (!checkboxStates[index])
+                    setSelectedAmount((prev) => prev + price);
+            } else {
+                setSelectedCount((prev) => prev - 1);
+                if (!checkboxStates[index])
+                    setSelectedAmount((prev) => prev - price);
+            }
+
+            return newState;
+        });
+    };
+
+    const handleCheckboxChange = (index, price) => {
+        setCheckboxStates((prevState) => {
+            const newState = { ...prevState, [index]: !prevState[index] };
+
+            // Update amount based on checkbox state
+            if (newState[index]) {
+                // Checkbox checked: Free, deduct price if toggle is on
+                if (toggleStates[index]) {
+                    setSelectedAmount((prev) => prev - price);
+                }
+            } else {
+                // Checkbox unchecked: Not free, add price back if toggle is on
+                if (toggleStates[index]) {
+                    setSelectedAmount((prev) => prev + price);
+                }
+            }
+
+            return newState;
+        });
+    };
+
     return (
         <div>
             <Modal open={opencondition} onClose={() => setopencondition(false)}>
@@ -32,12 +101,10 @@ const Amenities = ({ opencondition, setopencondition }) => {
                                 onClick={() => setopencondition(false)}
                                 style={{ cursor: "pointer" }}
                             >
-                                {/* You can add a close icon here */}
                                 <img src={close} alt="close" />
                             </li>
                         </div>
                         <div className="amenties">
-                            {/* Content inside the modal */}
                             <div className="heading">Add Amenities</div>
                             <div className="line">.</div>
                             <div className="page">
@@ -46,146 +113,91 @@ const Amenities = ({ opencondition, setopencondition }) => {
                                         <li>
                                             <img src={hut} alt="" />
                                         </li>
-                                        <li>05 total amenities</li>
+                                        <li>{selectedCount} total amenities</li>
                                     </div>
                                     <div className="end">
-                                        <li>$ 200.00</li>
+                                        <li>$ {selectedAmount}</li>
                                     </div>
                                 </div>
                                 <div className="light">
                                     <li>Available amenities</li>
                                 </div>
                                 <div className="elements">
-                                    <div className="bord">
-                                        <div className="element">
-                                            <div className="image">
-                                                <img src={amenity} alt="" />
-                                            </div>
-                                            <div className="details">
-                                                <div className="name">
-                                                    Amenties name
+                                    {AmenityData.map((amenity, index) => (
+                                        <div className={`bord`} key={index}>
+                                            <div className="element">
+                                                <div className="image">
+                                                    <img
+                                                        src={`./images/amenities/amenity${
+                                                            index + 1
+                                                        }.png`}
+                                                        alt=""
+                                                    />
                                                 </div>
-                                                <div className="infos">
-                                                    <li>$ 200</li>
+                                                <div className="details">
+                                                    <div className="name">
+                                                        {amenity.name}
+                                                    </div>
+                                                    <div className="infos">
+                                                        <li>
+                                                            ${amenity.price}
+                                                        </li>
+                                                        <li>
+                                                            valid{" "}
+                                                            {formatDate(
+                                                                amenity.valid_from
+                                                            )}{" "}
+                                                            -{" "}
+                                                            {formatDate(
+                                                                amenity.valid_to
+                                                            )}
+                                                        </li>
+                                                    </div>
+                                                </div>
+                                                <div className="toogle">
                                                     <li>
-                                                        valid feb 22 - 12 feb
-                                                        223
+                                                        <Toggle
+                                                            checked={
+                                                                !!toggleStates[
+                                                                    index
+                                                                ]
+                                                            }
+                                                            onChange={() =>
+                                                                handleToggleChange(
+                                                                    index,
+                                                                    amenity.price
+                                                                )
+                                                            }
+                                                        />
                                                     </li>
                                                 </div>
                                             </div>
-                                            <div className="toogle">
-                                                <li>
-                                                    <Toggle />
+                                            <div
+                                                className={
+                                                    toggleStates[index]
+                                                        ? "optionactive"
+                                                        : "option"
+                                                }
+                                            >
+                                                <li className="opts">
+                                                    <Checkbox
+                                                        checked={!!checkboxStates[index]}
+                                                        onChange={() =>
+                                                            handleCheckboxChange(
+                                                                index,
+                                                                amenity.price
+                                                            )
+                                                        }
+                                                        label="Free applicability"
+                                                    />
+                                                </li>
+                                                <li className="free">
+                                                    free applicability
                                                 </li>
                                             </div>
                                         </div>
-                                        <div className="optionactive">
-                                            <li className="opts">
-                                                <Checkboxes />
-                                            </li>
-                                            <li className="free">
-                                                free applicability
-                                            </li>
-                                        </div>
-                                    </div>
-                                    <div className="bord">
-                                        <div className="element">
-                                            <div className="image">
-                                                <img src={amenity} alt="" />
-                                            </div>
-                                            <div className="details">
-                                                <div className="name">
-                                                    Amenties name
-                                                </div>
-                                                <div className="infos">
-                                                    <li>$ 200</li>
-                                                    <li>
-                                                        valid feb 22 - 12 feb
-                                                        223
-                                                    </li>
-                                                </div>
-                                            </div>
-                                            <div className="toogle">
-                                                <li>
-                                                    <Toggle />
-                                                </li>
-                                            </div>
-                                        </div>
-                                        <div className="option">
-                                            <li className="opts">
-                                                <Checkboxes />
-                                            </li>
-                                            <li className="free">
-                                                free applicability
-                                            </li>
-                                        </div>
-                                    </div>
-                                    <div className="bord">
-                                        <div className="element">
-                                            <div className="image">
-                                                <img src={amenity} alt="" />
-                                            </div>
-                                            <div className="details">
-                                                <div className="name">
-                                                    Amenties name
-                                                </div>
-                                                <div className="infos">
-                                                    <li>$ 200</li>
-                                                    <li>
-                                                        valid feb 22 - 12 feb
-                                                        223
-                                                    </li>
-                                                </div>
-                                            </div>
-                                            <div className="toogle">
-                                                <li>
-                                                    <Toggle />
-                                                </li>
-                                            </div>
-                                        </div>
-                                        <div className="option">
-                                            <li className="opts">
-                                                <Checkboxes />
-                                            </li>
-                                            <li className="free">
-                                                free applicability
-                                            </li>
-                                        </div>
-                                    </div>
-                                    <div className="bord">
-                                        <div className="element">
-                                            <div className="image">
-                                                <img src={amenity} alt="" />
-                                            </div>
-                                            <div className="details">
-                                                <div className="name">
-                                                    Amenties name
-                                                </div>
-                                                <div className="infos">
-                                                    <li>$ 200</li>
-                                                    <li>
-                                                        valid feb 22 - 12 feb
-                                                        223
-                                                    </li>
-                                                </div>
-                                            </div>
-                                            <div className="toogle">
-                                                <li>
-                                                    <Toggle />
-                                                </li>
-                                            </div>
-                                        </div>
-                                        <div className="option">
-                                            <li className="opts">
-                                                <Checkboxes />
-                                            </li>
-                                            <li className="free">
-                                                free applicability
-                                            </li>
-                                        </div>
-                                    </div>
+                                    ))}
                                 </div>
-                                
                                 <div className="buttons">update & save</div>
                             </div>
                         </div>

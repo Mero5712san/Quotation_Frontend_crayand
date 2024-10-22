@@ -129,9 +129,9 @@
 }
 
 .amenties .page .elements .element .details .name{ 
-    font-weight:800;
-    font-size:1rem;
-
+    font-weight:700;
+    font-size:0.85rem;
+    margin-bottom: 0.1rem;
 }
 
 .amenties .page .elements .element .details{
@@ -148,7 +148,7 @@
 .amenties .page .elements .element .details .infos{
     display: flex;
     align-items: center;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     text-transform: capitalize;
     gap: 0.5rem;
 }

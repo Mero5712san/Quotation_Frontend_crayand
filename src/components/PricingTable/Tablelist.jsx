@@ -5,13 +5,17 @@ import InnerTable from "../InnerTable/InnerTable";
 import PrincingInnerTable from "../InnerTable/PricingInnerTable";
 import { GetpricingAPI } from "../../utils/API/API";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addMasterPricingTables } from "../../slice/MasterAPISlice";
 
 
 const Tablelist = ({ setopencondition }) => {
     const [isInnerTableOpen, setIsInnerTableOpen] = useState(false); 
     const [Pricetableopen, Setpricetableopen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(""); // Track the selected option
-    const [List , setList] = useState([])
+    // const [List , setList] = useState([])
+    const ListData = useSelector((s)=> s.masterpricingtable)
+    const dispatch = useDispatch()
 
     const handleTableClick = (item) => {
         setSelectedOption(item);
@@ -26,7 +30,8 @@ const Tablelist = ({ setopencondition }) => {
         try {
             const response = await axios.get(GetpricingAPI);
             if (response.status === 200) 
-                setList(response.data);
+                // setList(response.data);
+                dispatch(addMasterPricingTables(response.data))
         } catch (error) {
             console.log("Error while fetching data", error);
         }
@@ -37,13 +42,14 @@ const Tablelist = ({ setopencondition }) => {
     },[])
 
     // console.log(List)
+    
 
     return (
         <div className="pricingtable">
             <div className="heading">Pricing Table</div>
             <div className="line"></div>
             <div className="page">
-                {List.map((item, index) => (
+                {ListData.map((item, index) => (
                     <div 
                         className={`element${index + 1}`} 
                         key={index} 

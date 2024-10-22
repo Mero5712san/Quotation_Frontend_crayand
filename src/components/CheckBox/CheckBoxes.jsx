@@ -1,37 +1,22 @@
 import * as React from 'react';
 import MuiCheckbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CircleIcon from '@mui/icons-material/Circle';
-import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone';
-import CircleTwoToneIcon from '@mui/icons-material/CircleTwoTone';
-import { Stack } from '@mui/material';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'; // New icon
 
-function Checkbox({ label, icon, checkedIcon }) {
+function Checkbox({ checked, onChange, label }) {
   return (
     <FormControlLabel
       control={
         <MuiCheckbox
-          defaultChecked
-          icon={React.cloneElement(icon, { fontSize: 'small' })}
-          checkedIcon={React.cloneElement(checkedIcon, { fontSize: 'small' })}
-          sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }} // Adjust the size as needed
+          checked={checked}
+          onChange={onChange}
+          icon={<RadioButtonUncheckedIcon fontSize="small" />} // Updated icon
+          checkedIcon={<CheckCircleIcon fontSize="small" />}
         />
       }
     />
   );
 }
 
-export default function Checkboxes() {
-  return (
-    <Stack>
-      <Checkbox
-        icon={<RadioButtonUncheckedIcon />}
-        checkedIcon={<CheckCircleIcon />}
-      />
-    </Stack>
-  );
-}
+export default Checkbox;
