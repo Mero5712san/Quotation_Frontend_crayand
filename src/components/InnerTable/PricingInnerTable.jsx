@@ -12,6 +12,7 @@ import { GetrevenueAPI } from "../../utils/API/API";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addMasterRevenueType } from "../../slice/MasterAPISlice";
+import { setGrandTotalValues, setPrimaryValue } from "../../slice/StoreValues";
 
 const style = {
     position: "absolute",
@@ -20,7 +21,7 @@ const style = {
     transform: "translate(-50%, -50%)",
     width: "85%",
     maxWidth: "35vw",
-    height: "80vh",
+    height: "83vh",
     bgcolor: "white",
     boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
     borderRadius: "0.2rem",
@@ -29,14 +30,16 @@ const style = {
 const InnerTable = ({ opencondition, setopencondition, selectedOption }) => {
     const [Color, setColor] = useState("#B3776D");
     const [bgColor, setbgColor] = useState("#FEEAEA80");
-    const [uomvalue, setuomvalue] = useState(200);
-    const [activeRevenueType, setActiveRevenueType] = useState("lease");
+    const actuallOum = useSelector((s)=>s.storevalue.pricingtable.primary.oumvalue)
+    const [oumvalue, setuomvalue] = useState(actuallOum);
+    const oumValue = parseInt(oumvalue)
+    const [activeRevenueType, setActiveRevenueType] = useState("Sales");
     const [activeChargeable, setActiveChargeable] = useState("yes");
     const [activeComponentBased, setActiveComponentBased] = useState("amount");
     // const [RevenueType, setRevenueType] = useState([]);
     const RevenueType = useSelector((s)=> s.masterrevenuetype)
     const dispatch = useDispatch()
-
+    
     useEffect(() => {
         if (selectedOption === "Primary") {
             setColor("#B3776D");
@@ -81,6 +84,14 @@ const InnerTable = ({ opencondition, setopencondition, selectedOption }) => {
         fetchRevenueType();
     }, []);
 
+
+    const handleSubmit = () =>{
+        dispatch(setPrimaryValue({oumValue , activeRevenueType}))
+        // console.log(oumValue , activeRevenueType)
+        dispatch(setGrandTotalValues())
+        setuomvalue("")
+        setopencondition(false)
+    }
 
     // console.log(RevenueType)
     return (
@@ -204,7 +215,7 @@ const InnerTable = ({ opencondition, setopencondition, selectedOption }) => {
                                     <li>
                                         <input
                                             type="text"
-                                            value={uomvalue}
+                                            value={oumvalue}
                                             onChange={handleUomChange}
                                         />
                                     </li>
@@ -255,7 +266,7 @@ const InnerTable = ({ opencondition, setopencondition, selectedOption }) => {
                                     {" "}
                                     back
                                 </div>
-                                <div className="create">
+                                <div className="create" onClick={()=>handleSubmit()}>
                                     Create Pricing Component
                                 </div>
                             </div>

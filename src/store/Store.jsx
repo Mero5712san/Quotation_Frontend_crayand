@@ -11,6 +11,7 @@ import {
     MasterUser,
     MasterUtilitie,
 } from "../slice/MasterAPISlice";
+import { StoreValue } from "../slice/StoreValues";
 
 const Rootreducer = combineReducers({
     masterUser: MasterUser,
@@ -23,6 +24,7 @@ const Rootreducer = combineReducers({
     masterutilitie: MasterUtilitie,
     masterunitdetail: MasterUnitDetail,
     masterunitgallery: MasterUnitGallery,
+    storevalue : StoreValue,
 
 });
 

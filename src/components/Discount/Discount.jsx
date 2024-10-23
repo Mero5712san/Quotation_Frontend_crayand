@@ -14,6 +14,7 @@ import "../../styles/UnitDetails.css";
 import DiscountDropDown from "../Dropdown/DiscountDropDown";
 import axios from "axios";
 import { GetunitdetailsAPI } from "../../utils/API/API";
+import { useSelector } from "react-redux";
 
 const style = {
     position: "absolute",
@@ -28,13 +29,13 @@ const style = {
     borderRadius: "0.2rem",
 };
 
-const Discount  = ({ opencondition, setopencondition, id }) => {
+const Discount = ({ opencondition, setopencondition, id }) => {
     const [unitDetails, setUnitDetails] = useState(null);
-
+    const Store = useSelector((s)=>s.storevalue) 
     const fetchUnitDetails = async () => {
         try {
             // Replace :id with the actual id in the API endpoint
-            const url = GetunitdetailsAPI.replace(':id', id);
+            const url = GetunitdetailsAPI.replace(":id", id);
             const response = await axios.get(url);
             if (response.status === 200) {
                 // Assuming the API returns an array, set the first element
@@ -51,6 +52,7 @@ const Discount  = ({ opencondition, setopencondition, id }) => {
         }
     }, [id]);
 
+
     if (!unitDetails) return null; // Show nothing or a loading state while fetching
 
     return (
@@ -59,7 +61,10 @@ const Discount  = ({ opencondition, setopencondition, id }) => {
                 <Box sx={style}>
                     <div className="centerbox">
                         <div className="close">
-                            <li onClick={() => setopencondition(false)} style={{ cursor: "pointer" }}>
+                            <li
+                                onClick={() => setopencondition(false)}
+                                style={{ cursor: "pointer" }}
+                            >
                                 <img src={close} alt="close" />
                             </li>
                         </div>
@@ -74,28 +79,64 @@ const Discount  = ({ opencondition, setopencondition, id }) => {
                                         </div>
                                         <div className="mini">
                                             <div className="upper">
-                                                <li><img src={unit2} alt="" /></li>
-                                                <li><img src={unit2} alt="" /></li>
+                                                <li>
+                                                    <img src={unit2} alt="" />
+                                                </li>
+                                                <li>
+                                                    <img src={unit2} alt="" />
+                                                </li>
                                             </div>
                                             <div className="lower">
-                                                <li><img src={unit2} alt="" /></li>
-                                                <li><img src={unit} alt="" /></li>
+                                                <li>
+                                                    <img src={unit2} alt="" />
+                                                </li>
+                                                <li>
+                                                    <img src={unit} alt="" />
+                                                </li>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="infos">
                                         <div className="nameinfo">
-                                            <li className="name">{unitDetails.name || "N/A"}</li>
-                                            <div className="version">UNIT-{unitDetails.id || "N/A"}</div>
+                                            <li className="name">
+                                                {unitDetails.name || "N/A"}
+                                            </li>
+                                            <div className="version">
+                                                UNIT-{unitDetails.id || "N/A"}
+                                            </div>
                                         </div>
                                         <div className="address">
-                                            <li>{unitDetails.address || "N/A"}</li>
+                                            <li>
+                                                {unitDetails.address || "N/A"}
+                                            </li>
                                         </div>
                                         <div className="icons">
-                                            <li><img src={bed} alt="" /> <span>{unitDetails.bed_rooms || 0}</span></li>
-                                            <li><img src={bath} alt="" /> <span>{unitDetails.baths || 0}</span></li>
-                                            <li><img src={home} alt="" /> <span>{unitDetails.bhk_count || "N/A"}</span></li>
-                                            <li><img src={sqft} alt="" /> <span>{unitDetails.area || "N/A"}</span> sqft</li>
+                                            <li>
+                                                <img src={bed} alt="" />{" "}
+                                                <span>
+                                                    {unitDetails.bed_rooms || 0}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <img src={bath} alt="" />{" "}
+                                                <span>
+                                                    {unitDetails.baths || 0}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <img src={home} alt="" />{" "}
+                                                <span>
+                                                    {unitDetails.bhk_count ||
+                                                        "N/A"}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <img src={sqft} alt="" />{" "}
+                                                <span>
+                                                    {unitDetails.area || "N/A"}
+                                                </span>{" "}
+                                                sqft
+                                            </li>
                                         </div>
                                         <div className="line"></div>
                                         <div className="handbook">
@@ -103,7 +144,9 @@ const Discount  = ({ opencondition, setopencondition, id }) => {
                                                 <img src={handbook} alt="" />
                                                 <span>Handbook</span>
                                             </li>
-                                            <li className="detail">View / Downloads</li>
+                                            <li className="detail">
+                                                View / Downloads
+                                            </li>
                                         </div>
                                     </div>
                                 </div>
@@ -118,7 +161,7 @@ const Discount  = ({ opencondition, setopencondition, id }) => {
                                         </div>
                                         <div className="light">
                                             <li>discount</li>
-                                            <li>
+                                            <li className="inputDrop"> <input type="text" /> {/* input line added */}
                                                 <DiscountDropDown />
                                             </li>
                                         </div>
@@ -129,7 +172,8 @@ const Discount  = ({ opencondition, setopencondition, id }) => {
                                         </div>
                                         <div className="light">
                                             <li>discount</li>
-                                            <li>
+                                            <li className="inputDrop"><input type="text" />  {/* input line added */}
+
                                                 <DiscountDropDown />
                                             </li>
                                         </div>
@@ -140,7 +184,7 @@ const Discount  = ({ opencondition, setopencondition, id }) => {
                                         </div>
                                         <div className="light">
                                             <li>discount</li>
-                                            <li>
+                                            <li className="inputDrop"><input type="text" />   {/* input line added */}
                                                 <DiscountDropDown />
                                             </li>
                                         </div>
@@ -151,7 +195,7 @@ const Discount  = ({ opencondition, setopencondition, id }) => {
                                         </div>
                                         <div className="light">
                                             <li>discount</li>
-                                            <li>
+                                            <li className="inputDrop"><input type="text" /> {/* input line added */}
                                                 <DiscountDropDown />
                                             </li>
                                         </div>
@@ -162,7 +206,7 @@ const Discount  = ({ opencondition, setopencondition, id }) => {
                                         </div>
                                         <div className="light">
                                             <li>discount</li>
-                                            <li>
+                                            <li><input type="text" /> {/* input  line added */}
                                                 <DiscountDropDown />
                                             </li>
                                         </div>
@@ -187,4 +231,4 @@ const Discount  = ({ opencondition, setopencondition, id }) => {
     );
 };
 
-export default Discount ;
+export default Discount;

@@ -12,6 +12,7 @@ import axios from "axios";
 import { formatDate } from "../../utils/DateFormat/DateFormat";
 import { useDispatch, useSelector } from "react-redux";
 import { addMasterAmenities } from "../../slice/MasterAPISlice";
+import { setAmenitiesvalue, setGrandTotalValues } from "../../slice/StoreValues";
 
 const style = {
     position: "absolute",
@@ -27,20 +28,24 @@ const style = {
 };
 
 const Amenities = ({ opencondition, setopencondition }) => {
-    // const [Amenities, setAmenities] = useState([]);
     const [toggleStates, setToggleStates] = useState({}); // State for toggle switches
     const [checkboxStates, setCheckboxStates] = useState({}); // State for checkboxes
     const [selectedCount, setSelectedCount] = useState(0);
-    const [selectedAmount, setSelectedAmount] = useState(0);
-    const AmenityData = useSelector((s)=>s.masteramenitie)
-    const dispatch = useDispatch()
+    const [selectedAmount, setSelectedAmount] = useState(0); // total amount the amenities
+    const [selectedAmenities, setSelectedAmenities] = useState([]); // Store selected amenities with is_free
+    const dispatch = useDispatch();
+    const AmenityData = useSelector((s) => s.masteramenitie);
+
+    // console.log("selectedAmenities", selectedAmenities);
+    // console.log("selectedAmount", selectedAmount);
+    // console.log("selectedAmenities", selectedAmenities);
 
     const fetchAmenities = async () => {
         try {
             const response = await axios.get(GetamenitiesAPI);
-            if (response.status === 200) 
-                // setAmenities(response.data);
-                dispatch(addMasterAmenities(response.data))
+            if (response.status === 200) {
+                dispatch(addMasterAmenities(response.data));
+            }
         } catch (error) {
             console.log("Error while fetching data", error);
         }
@@ -51,46 +56,76 @@ const Amenities = ({ opencondition, setopencondition }) => {
     }, []);
 
     // Handle toggle change
-    const handleToggleChange = (index, price) => {
+    const handleToggleChange = (index, amenity) => {
+        const { id, price } = amenity;
         setToggleStates((prevState) => {
             const newState = { ...prevState, [index]: !prevState[index] };
+            const isFree = checkboxStates[index]; // Check if free applicability is selected
 
-            // Update count and amount
             if (newState[index]) {
+                // If toggled ON
                 setSelectedCount((prev) => prev + 1);
-                if (!checkboxStates[index])
+                if (!isFree) {
+                    // Only add price if not free
                     setSelectedAmount((prev) => prev + price);
+                }
+                setSelectedAmenities((prev) => [
+                    ...prev,
+                    { id: id, is_free: !!isFree },
+                ]);
             } else {
+                // If toggled OFF
                 setSelectedCount((prev) => prev - 1);
-                if (!checkboxStates[index])
+                if (!isFree) {
                     setSelectedAmount((prev) => prev - price);
+                }
+                setSelectedAmenities((prev) =>
+                    prev.filter((item) => item.id !== id)
+                );
             }
-
             return newState;
         });
     };
 
-    const handleCheckboxChange = (index, price) => {
+    const handleCheckboxChange = (index, amenity) => {
+        const { id, price } = amenity;
         setCheckboxStates((prevState) => {
             const newState = { ...prevState, [index]: !prevState[index] };
+            const isToggled = toggleStates[index]; // Check if toggle is ON
 
-            // Update amount based on checkbox state
             if (newState[index]) {
-                // Checkbox checked: Free, deduct price if toggle is on
-                if (toggleStates[index]) {
-                    setSelectedAmount((prev) => prev - price);
+                // Checkbox checked: Free
+                if (isToggled) {
+                    setSelectedAmount((prev) => prev - price); // Deduct price if toggle is ON
                 }
+                setSelectedAmenities((prev) =>
+                    prev.map((item) =>
+                        item.id === id ? { ...item, is_free: true } : item
+                    )
+                );
             } else {
-                // Checkbox unchecked: Not free, add price back if toggle is on
-                if (toggleStates[index]) {
-                    setSelectedAmount((prev) => prev + price);
+                // Checkbox unchecked: Not free
+                if (isToggled) {
+                    setSelectedAmount((prev) => prev + price); // Add price back if toggle is ON
                 }
+                setSelectedAmenities((prev) =>
+                    prev.map((item) =>
+                        item.id === id ? { ...item, is_free: false } : item
+                    )
+                );
             }
-
             return newState;
         });
     };
 
+    const HandleSubmit  = () => {
+        dispatch(setAmenitiesvalue({selectedAmenities, selectedAmount}))
+        dispatch(setGrandTotalValues())
+        setopencondition(false)
+    }
+
+
+// console.log(selectedAmenities)
     return (
         <div>
             <Modal open={opencondition} onClose={() => setopencondition(false)}>
@@ -165,7 +200,7 @@ const Amenities = ({ opencondition, setopencondition }) => {
                                                             onChange={() =>
                                                                 handleToggleChange(
                                                                     index,
-                                                                    amenity.price
+                                                                    amenity
                                                                 )
                                                             }
                                                         />
@@ -185,7 +220,7 @@ const Amenities = ({ opencondition, setopencondition }) => {
                                                         onChange={() =>
                                                             handleCheckboxChange(
                                                                 index,
-                                                                amenity.price
+                                                                amenity
                                                             )
                                                         }
                                                         label="Free applicability"
@@ -198,7 +233,7 @@ const Amenities = ({ opencondition, setopencondition }) => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className="buttons">update & save</div>
+                                <div className="buttons" onClick={()=>HandleSubmit()}>update & save</div>
                             </div>
                         </div>
                     </div>

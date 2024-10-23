@@ -11,6 +11,7 @@ import { GetutilitiesAPI } from "../../utils/API/API";
 import { formatDate } from "../../utils/DateFormat/DateFormat";
 import { useDispatch, useSelector } from "react-redux";
 import { addMasterUtilities } from "../../slice/MasterAPISlice";
+import { setGrandTotalValues, setUtiltiesValue } from "../../slice/StoreValues";
 
 const style = {
     position: "absolute",
@@ -26,21 +27,17 @@ const style = {
 };
 
 const Utilities = ({ opencondition, setopencondition }) => {
-    // const [Utilities, setUtilities] = useState([]);
     const [UtilityCount, setUtilityCount] = useState(0);
     const [selectedAmount, setSelectedAmount] = useState(0);
     const [toggleStates, setToggleStates] = useState({}); // Track toggle states
-    const UtilityData = useSelector((s)=>s.masterutilitie)
-    const dispatch  = useDispatch()
-
+    const [selectedUtilityIds, setSelectedUtilityIds] = useState([]); // Store selected utility ids as objects
+    const UtilityData = useSelector((s) => s.masterutilitie);
+    const dispatch = useDispatch();
 
     const fetchUtilities = async () => {
         try {
             const response = await axios.get(GetutilitiesAPI);
-            if (response.status === 200) 
-                // setUtilities(response.data);
-                dispatch(addMasterUtilities(response.data))
-
+            if (response.status === 200) dispatch(addMasterUtilities(response.data));
         } catch (error) {
             console.log("Error while fetching data", error);
         }
@@ -51,22 +48,46 @@ const Utilities = ({ opencondition, setopencondition }) => {
     }, []);
 
     // Handle toggle change
-    const handleToggleChange = (index, price) => {
+    const handleToggleChange = (index, utility) => {
         setToggleStates((prevState) => {
             const newState = { ...prevState, [index]: !prevState[index] };
 
             // Update count and amount
             if (newState[index]) {
                 setUtilityCount((prev) => prev + 1);
-                setSelectedAmount((prev) => prev + price);
+                setSelectedAmount((prev) => prev + utility.price);
             } else {
                 setUtilityCount((prev) => prev - 1);
-                setSelectedAmount((prev) => prev - price);
+                setSelectedAmount((prev) => prev - utility.price);
             }
+
+            // Update selected utility ids as objects like {id: "1"}
+            let updatedSelectedUtilityIds;
+            if (newState[index]) {
+                // Add utility id to the list as an object
+                updatedSelectedUtilityIds = [...selectedUtilityIds, { id: utility.id }];
+            } else {
+                // Remove utility id from the list
+                updatedSelectedUtilityIds = selectedUtilityIds.filter(
+                    (item) => item.id !== utility.id
+                );
+            }
+
+            setSelectedUtilityIds(updatedSelectedUtilityIds); // Update the selected utility ids state
+
 
             return newState;
         });
     };
+
+    const HandleSubmit = () => {
+        dispatch(setUtiltiesValue({selectedUtilityIds, selectedAmount}))
+        dispatch(setGrandTotalValues())
+        setopencondition(false)
+    }
+
+    // console.log(selectedUtilityIds)
+    // console.log(selectedAmount)
 
     return (
         <div>
@@ -104,16 +125,19 @@ const Utilities = ({ opencondition, setopencondition }) => {
                                         <div className="bord" key={index}>
                                             <div className="element">
                                                 <div className="image">
-                                                    <img src={`./images/Utilities/utility${index + 1}.png`} alt="" />
+                                                    <img
+                                                        src={`./images/Utilities/utility${index + 1}.png`}
+                                                        alt=""
+                                                    />
                                                 </div>
                                                 <div className="details">
-                                                    <div className="name">
-                                                        {utility.name}
-                                                    </div>
+                                                    <div className="name">{utility.name}</div>
                                                     <div className="infos">
                                                         <li>$ {utility.price}</li>
                                                         <li>
-                                                            valid {formatDate(utility.valid_from)} - {formatDate(utility.valid_to)}
+                                                            valid{" "}
+                                                            {formatDate(utility.valid_from)} -{" "}
+                                                            {formatDate(utility.valid_to)}
                                                         </li>
                                                     </div>
                                                 </div>
@@ -121,7 +145,9 @@ const Utilities = ({ opencondition, setopencondition }) => {
                                                     <li>
                                                         <Toggle
                                                             checked={!!toggleStates[index]}
-                                                            onChange={() => handleToggleChange(index, utility.price)}
+                                                            onChange={() =>
+                                                                handleToggleChange(index, utility)
+                                                            }
                                                         />
                                                     </li>
                                                 </div>
@@ -129,7 +155,7 @@ const Utilities = ({ opencondition, setopencondition }) => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className="buttons">update & save</div>
+                                <div className="buttons" onClick={()=>HandleSubmit()}>update & save</div>
                             </div>
                         </div>
                     </div>

@@ -35,6 +35,18 @@ const Dashboard = () => {
     const userData = useSelector((s) => s.masterUser);
     const unitData = useSelector((s) => s.masterUnit);
     const quotationData = useSelector((s) => s.masterquotationDetail);
+
+    const GrantAmount = useSelector((s) => s.storevalue.grandAmount);
+    const GrantDiscountValue = useSelector((s) => s.storevalue.grandDiscountValue);
+    const GrantTotalvalue = useSelector((s) => s.storevalue.grandTotalValue);
+    const GrantTaxValue = useSelector((s) => s.storevalue.grandTaxValue);
+    // const GrantRefundable = useSelector((s)=>s.pricingtable.refundable.oumvalue)
+
+    // console.log("dashoard amount",GrantAmount)
+    // console.log("dashoard discount",GrantDiscountValue)
+    // console.log("dashoard total",GrantTotalvalue)
+    // console.log("dashoard tax",GrantTaxValue)
+
     // const UserDetails = userData
     const dispatch = useDispatch();
 
@@ -101,7 +113,25 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className="pagecontain">
-                <div className="toppath">{/* Other content */}</div>
+                <div className="toppath">
+                    <li>add contact</li>
+                    <li>
+                        <img src={bdropdown} alt="" />
+                    </li>
+                    <li>lead details</li>
+                    <li>
+                        <img src={bdropdown} alt="" />
+                    </li>
+                    <li>preview and create lead</li>
+                    <li>
+                        <img src={bdropdown} alt="" />
+                    </li>
+                    <li>quotation details</li>
+                    <li className="number">
+                        <span>4</span>
+                    </li>
+                    <li>preview and create</li>
+                </div>
                 <div className="pagecards">
                     <div className="leaddetails">
                         <div className="heading">
@@ -291,14 +321,16 @@ const Dashboard = () => {
                                 <div className="list">
                                     <li className="start">total amount</li>
                                     <li className="center">3</li>
-                                    <li className="end">$3,600.00</li>
+                                    <li className="end">
+                                        ${GrantAmount || 0}
+                                    </li>
                                 </div>
                                 <div className="list">
                                     <li className="start">total discount</li>
                                     <li className="center">10%</li>
                                     <li className="end">
                                         <span className="discount">
-                                            - $ 100.00
+                                            - ${GrantDiscountValue || 0}
                                         </span>
                                     </li>
                                 </div>
@@ -312,14 +344,16 @@ const Dashboard = () => {
                                 <div className="list">
                                     <li className="start">Total tax</li>
                                     <li className="center">18%</li>
-                                    <li className="end">$ 648.00</li>
+                                    <li className="end">
+                                        ${GrantTaxValue || 0}
+                                    </li>
                                 </div>
                             </div>
                             <div className="bottom">
                                 <div className="line"></div>
                                 <div className="list">
                                     <li className="start">quote amount</li>
-                                    <li className="end">$ 4,148.00</li>
+                                    <li className="end">${GrantTotalvalue || 0}</li>
                                 </div>
                             </div>
                         </div>
